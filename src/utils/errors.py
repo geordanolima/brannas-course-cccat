@@ -1,0 +1,6 @@
+class Errors:
+    INVALID_CPF = -1
+    INVALID_EMAIL = -2
+    INVALID_NAME = -3
+    ACCOUNT_EXISTENT = -4
+    INVALID_PLATE = -5
