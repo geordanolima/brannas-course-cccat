@@ -1,14 +1,21 @@
+from uuid import uuid4
 import pytest
-from curso_brannas.src.repositories.account import AccountRepository
-from curso_brannas.src.models.account import Account
-from curso_brannas.src.signup import Signup
-from curso_brannas.src.utils.errors import Errors
+from src.repositories.account import AccountRepository
+from src.models.account import Account
+from src.use_case.signup import Signup
+from src.utils.errors import (
+    ErrorAccountExistent,
+    ErrorInvalidCpf,
+    ErrorInvalidEmail,
+    ErrorInvalidName,
+    ErrorInvalidPlate,
+)
 
 
 @pytest.fixture
 def create_account() -> Account:
-    account = Account()
-    account.new(
+    account = Account(
+        account_id=str(uuid4()),
         name = "test name",
         email = "test@test.com",
         cpf = "857.306.180-42",
@@ -57,36 +64,37 @@ def populate_account(db_session, create_account: Account):
 
 
 def test_account_existent(populate_account, db_connection):
-    signup = Signup(connection_db=db_connection)
-    registered = signup.sigin(account=populate_account)
-    assert registered == Errors.ACCOUNT_EXISTENT
+    with pytest.raises(ErrorAccountExistent):
+        signup = Signup(connection_db=db_connection)
+        signup.sigin(account=populate_account)
 
 
 def test_account_not_existent(create_account, db_connection):
     signup = Signup(connection_db=db_connection)
-    registered = signup.sigin(account=create_account)
-    id = db_connection.db_get(sql=AccountRepository().get_account(email=create_account.email))[0][0]
-    assert registered == id
+    registered: Account = signup.sigin(account=create_account)
+    id = db_connection.db_get(sql=AccountRepository().get_account_id(id=create_account.account_id))[0][0]
+    assert registered.account_id == id
     
     
-def test_account_invalid_name(db_clear, create_account_invalid_name, db_connection):
-    signup = Signup(connection_db=db_connection)
-    registered = signup.sigin(account=create_account_invalid_name)
-    assert registered == Errors.INVALID_NAME
+def test_account_invalid_name(create_account_invalid_name, db_connection):
+    with pytest.raises(ErrorInvalidName):
+        signup = Signup(connection_db=db_connection)
+        signup.sigin(account=create_account_invalid_name)
 
 
 def test_account_invalid_email(create_account_invalid_email, db_connection):
-    signup = Signup(connection_db=db_connection)
-    registered = signup.sigin(account=create_account_invalid_email)
-    assert registered == Errors.INVALID_EMAIL
+    with pytest.raises(ErrorInvalidEmail):
+        signup = Signup(connection_db=db_connection)
+        signup.sigin(account=create_account_invalid_email)
 
 
 def test_account_invalid_cpf(create_account_invalid_cpf, db_connection):
-    signup = Signup(connection_db=db_connection)
-    registered = signup.sigin(account=create_account_invalid_cpf)
-    assert registered == Errors.INVALID_CPF
-    
+    with pytest.raises(ErrorInvalidCpf):
+        signup = Signup(connection_db=db_connection)
+        signup.sigin(account=create_account_invalid_cpf)
+
+
 def test_account_driver_invalid_plate(create_account_invalid_plate, db_connection):
-    signup = Signup(connection_db=db_connection)
-    registered = signup.sigin(account=create_account_invalid_plate)
-    assert registered == Errors.INVALID_PLATE
+    with pytest.raises(ErrorInvalidPlate):
+        signup = Signup(connection_db=db_connection)
+        signup.sigin(account=create_account_invalid_plate)

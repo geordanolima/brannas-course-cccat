@@ -1,24 +1,31 @@
-import uuid
+from uuid import uuid4
+from pydantic import BaseModel
 
 
-class Account():
-    id: str
+class Account(BaseModel):
+    account_id: str = uuid4()
     name: str
     email: str
     cpf: str
-    is_passenger: bool 
-    is_driver: bool
-    car_plate: str
+    is_passenger: bool
+    is_driver: bool | None = False
+    car_plate: str | None = ''    
 
     def get_id(self):
-        return uuid.uuid4()
+        return uuid4()
 
-    def new(self, **kwargs):
-        def _validate(value):
-            return value if len(str(value)) else "Null"
-        self.name = _validate(kwargs["name"])
-        self.email = _validate(kwargs["email"])
-        self.cpf = _validate(kwargs["cpf"])
-        self.is_passenger = _validate(kwargs["is_passenger"])
-        self.is_driver = _validate(kwargs["is_driver"])
-        self.car_plate = _validate(kwargs["car_plate"])
+
+class AccountDict():
+    def __init__(self, account_id, name, email, cpf, is_passenger, is_driver=False, car_plate=''):
+        self._account = Account(
+            account_id = account_id,
+            name = name,
+            email = email,
+            cpf = cpf,
+            is_passenger = is_passenger,
+            is_driver = is_driver,
+            car_plate = car_plate,
+        )
+
+    def account(self):
+        return self._account

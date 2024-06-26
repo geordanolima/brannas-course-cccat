@@ -1,11 +1,10 @@
-import os
 import sys
 from pathlib import Path
 
 import pytest
 
-from curso_brannas.settings import Settings
-from database import Database
+from settings import Settings
+from src.database import Database
 
 
 def _set_pythonpath():
@@ -53,7 +52,7 @@ def db_clear(envvars):
 
 def get_migrate(file_name) -> str:
     sql = ""
-    file = open(f"curso_brannas/src/migrations/{file_name}.sql")
+    file = open(f"src/migrations/{file_name}.sql")
     for line in file:
         sql = sql + " " + line
     return sql
@@ -61,7 +60,7 @@ def get_migrate(file_name) -> str:
 
 @pytest.fixture
 def db_session(db_connection):
-    cursor = db_connection.conexao.cursor()
+    cursor = db_connection.connection.cursor()
     yield cursor
     cursor.close()
 
