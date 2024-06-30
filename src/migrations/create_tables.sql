@@ -1,8 +1,8 @@
-drop schema if exists cccat17 cascade;
+drop schema if exists cccat cascade;
 
-create schema cccat17;
+create schema cccat;
 
-create table cccat17.account (
+create table cccat.account (
 	account_id uuid primary key,
 	name text not null,
 	email text not null,
@@ -13,11 +13,11 @@ create table cccat17.account (
 	is_driver boolean not null default false
 );
 
-create table cccat17.ride (
+create table cccat.ride (
 	ride_id uuid,
 	passenger_id uuid,
 	driver_id uuid,
-	status text,
+	status int,
 	fare numeric,
 	distance numeric,
 	from_lat numeric,

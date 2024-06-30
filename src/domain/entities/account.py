@@ -24,5 +24,5 @@ class AccountEntitie:
             car_plate=car_plate,
         )
 
-    def account(self):
+    def object(self):
         return self._account

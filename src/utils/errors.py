@@ -41,3 +41,12 @@ class ErrorIsNeedPassenger(BaseException):
 
 class ErrorHaveRideInProgress(BaseException):
     message = {"ERROR": "HAVE A RIDE IN PROGRESS"}
+
+
+class ErrorIsInvalidUUID(BaseException):
+    message = {"ERROR": "ID INVALID TYPE"}
+
+
+class ErrorAccountNotFound():
+    message = {"ERROR": "ACCOUNT NOT FOUND"}
+    http_status = status.HTTP_404_NOT_FOUND

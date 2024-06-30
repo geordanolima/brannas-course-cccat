@@ -1,4 +1,5 @@
 import re
+import uuid
 
 
 class Validates:
@@ -52,3 +53,11 @@ class Validates:
 
     def _get_actual_digit(self, cpf: str):
         return cpf[-2:]
+
+
+    def is_uuid(self, id: str):
+        try:
+            uuid.UUID(id)
+            return True
+        except:
+            return False

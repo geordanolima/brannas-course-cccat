@@ -1,15 +1,17 @@
 from datetime import datetime
 
+from ...domain.constants import RideStatusEnum
+
 from ..models.ride import Ride
 
 
-class RideEntitie(Ride):
+class RideEntitie:
     def __init__(
         self,
         ride_id: str,
         passenger_id: str,
-        driver_id: str,
-        status: str,
+        status: str = RideStatusEnum.CREATED.value,
+        driver_id: str = None,
         fare: float = None,
         distance: float = None,
         from_lat: float = None,
@@ -18,7 +20,7 @@ class RideEntitie(Ride):
         to_long: float = None,
         date: datetime = datetime.now(),
     ):
-        self.ride = Ride(
+        self._ride = Ride(
             ride_id=ride_id,
             passenger_id=passenger_id,
             driver_id=driver_id,
@@ -33,4 +35,4 @@ class RideEntitie(Ride):
         )
 
     def object(self) -> Ride:
-        return self.ride
+        return self._ride

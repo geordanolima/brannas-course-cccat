@@ -1,17 +1,18 @@
-from database import Database
-from domain.entities.account import AccountEntitie
-from src.domain.repositories import AccountRepository
+from src.database import Database
+from src.domain.entities import AccountEntitie
 from src.domain.models import Account
+from src.domain.repositories import AccountRepository
 
 
 class AccountDatabaseRepository(AccountRepository):
-    table: str = "cccat17.account"
+    table: str = "cccat.account"
 
     def __init__(self, db: Database) -> None:
         self.db = db
 
-    def insert_account(self, account: Account) -> str:
-        return self.db.db_query(sql=self._sql_insert_account(account=account))
+    def insert_account(self, account: Account):
+        self.db.db_query(sql=self._sql_insert_account(account=account))
+        return account
 
     def get_exists_account(self, email: str) -> bool:
         return bool(self.db.db_get(sql=self._sql_get_exists_account(email=email))[0][0])
@@ -28,7 +29,7 @@ class AccountDatabaseRepository(AccountRepository):
             return AccountEntitie(**accounts[0]).object()
         return None
 
-    def get_list_accounts(self):
+    def get_accounts(self):
         accounts = self.db.db_get_dict(sql=self._sql_get_accounts(limit=100))
         result = []
         for item in accounts:
@@ -42,14 +43,15 @@ class AccountDatabaseRepository(AccountRepository):
         return self.db.db_query(sql=self._sql_update_password(account=account, new_password=new_password))
 
     def _sql_insert_account(self, account) -> str:
-        sql = """INSERT INTO {table} (account_id, "name", email, cpf, car_plate, is_passenger, is_driver)
-            VALUES ('{account_id}', '{name}', '{email}', '{cpf}', '{car_plate}', {is_passenger}, {is_driver});
+        sql = """INSERT INTO {table} (account_id, "name", email, password, cpf, car_plate, is_passenger, is_driver)
+            VALUES ('{account_id}', '{name}', '{email}', '{password}', '{cpf}', '{car_plate}', {is_passenger}, {is_driver});
         """
         return sql.format(
             table=self.table,
             account_id=account.account_id,
             name=account.name,
             email=account.email,
+            password=account.password,
             cpf=account.cpf,
             car_plate=account.car_plate,
             is_passenger=account.is_passenger,

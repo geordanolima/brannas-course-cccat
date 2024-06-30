@@ -1,24 +1,24 @@
+from datetime import datetime
 from uuid import uuid4
 
 from pydantic import BaseModel
 
-from addapters.machine_status import MachineStatus
-
 from ..constants import RideStatusEnum
+from ...addapters.machine_status import MachineStatus
 
 
 class Ride(BaseModel):
     ride_id: str = uuid4()
     passenger_id: str
-    driver_id: str
-    status: int = RideStatusEnum.CREATED
-    fare: float
-    distance: float
-    from_lat: float
-    from_long: float
-    to_lat: float
-    to_long: float
-    date: float
+    driver_id: str | None
+    status: int = RideStatusEnum.CREATED.value
+    fare: float | None
+    distance: float | None
+    from_lat: float | None
+    from_long: float | None
+    to_lat: float | None
+    to_long: float | None
+    date: datetime | None
 
     MACHINE_STATUS = [
         {

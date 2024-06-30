@@ -1,6 +1,6 @@
 import abc
 
-from database import Database
+from src.database import Database
 from src.domain.models import Account
 
 
@@ -11,7 +11,7 @@ class AccountRepository(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def insert_account(self, account: Account) -> str:
+    def insert_account(self, account: Account):
         ...
 
     @abc.abstractmethod

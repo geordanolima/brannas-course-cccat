@@ -3,7 +3,7 @@ import bcrypt
 
 def cryptography_password(password: str):
     password = password.encode("utf-8")
-    return bcrypt.hashpw(password, bcrypt.gensalt(5))
+    return bcrypt.hashpw(password, bcrypt.gensalt(5)).decode()
 
 
 def compare_password(hashed_password, password):

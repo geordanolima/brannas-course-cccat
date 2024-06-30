@@ -1,6 +1,6 @@
 import abc
 
-from domain.constants import RideStatusEnum
+from src.domain.constants import RideStatusEnum
 
 from ..models.ride import Ride
 from src.database import Database
@@ -16,13 +16,17 @@ class RideRepository(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def get_rides_by_driver(self, driver_id: str, status: RideStatusEnum, limit: int) -> list[Ride]:
+    def get_ride_by_id(self, id: str):
         ...
 
     @abc.abstractmethod
-    def get_rides_by_passenger(self, passenger_id: str, status_not_in: list[RideStatusEnum], limit: int) -> list[Ride]:
+    def get_rides_by_driver(self, driver_id: str, status: int, limit: int) -> list[Ride]:
         ...
 
     @abc.abstractmethod
-    def update_status_ride(self, ride: Ride, new_status: RideStatusEnum):
+    def get_rides_by_passenger(self, passenger_id: str, status_not_in: list[int], limit: int) -> list[Ride]:
+        ...
+
+    @abc.abstractmethod
+    def update_status_ride(self, ride: Ride, new_status: int):
         ...

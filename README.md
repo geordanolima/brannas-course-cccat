@@ -1,4 +1,4 @@
-# brannas-course-cccat17
+# brannas-course-cccat
 
 description:
 UC3 - Solicitar corrida

@@ -1,7 +1,9 @@
 from uuid import uuid4
 
+from ..utils.passwords import cryptography_password
+
 from ..domain.models import Account
-from ..repositories import AccountRepository
+from ..domain.repositories import AccountRepository
 from ..utils import (
     ErrorAccountExistent, ErrorInvalidCpf, ErrorInvalidEmail, ErrorInvalidName, ErrorInvalidPlate, Validates
 )
@@ -21,8 +23,9 @@ class Signup:
             raise ErrorInvalidEmail()
         if self.validate.invalid_cpf(cpf=account.cpf):
             raise ErrorInvalidCpf()
-        if self.validate.invalid_plate(plate=account, is_driver=account.is_driver):
+        if self.validate.invalid_plate(plate=account.car_plate, is_driver=account.is_driver):
             raise ErrorInvalidPlate()
         account.account_id = uuid4()
+        account.password = cryptography_password(password=account.password)
         self.repository.insert_account(account=account)
         return self.repository.get_account_by_id(id=account.account_id)
