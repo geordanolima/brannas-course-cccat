@@ -37,7 +37,7 @@ class Database():
             result_obj.append(objeto_dict)
         return result_obj
 
-    def _execute_query(self, sql:str, get_result:bool):
+    def _execute_query(self, sql: str, get_result: bool):
         self.cursor.execute(sql)
         if get_result:
             return self.cursor.fetchall()

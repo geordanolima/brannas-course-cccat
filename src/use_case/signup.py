@@ -1,45 +1,28 @@
-from src.database import Database
-from src.models.account import Account, AccountDict
-from src.presenter.base_presenter import BasePresenter
-from src.repositories.account import AccountRepository
-from src.utils.validates import Validate
-from src.utils.errors import ErrorAccountExistent, ErrorInvalidCpf, ErrorInvalidEmail, ErrorInvalidName, ErrorInvalidPlate
+from uuid import uuid4
 
-class Signup():
-    def __init__(self, connection_db: Database) -> None:
-        self.db = connection_db
-        self.validate = Validate()
-    
+from ..domain.models import Account
+from ..repositories import AccountRepository
+from ..utils import (
+    ErrorAccountExistent, ErrorInvalidCpf, ErrorInvalidEmail, ErrorInvalidName, ErrorInvalidPlate, Validates
+)
+
+
+class Signup:
+    def __init__(self, repository: AccountRepository) -> None:
+        self.validate = Validates()
+        self.repository = repository
+
     def sigin(self, account: Account) -> Account:
-        if self._validate_account_existent(email=account.email):
+        if self.repository.get_exists_account(email=account.email):
             raise ErrorAccountExistent()
-        if self.validate.invalid_account_name(name=account.name):
+        if self.validate.invalid_name(name=account.name):
             raise ErrorInvalidName()
-        if self.validate.invalid_account_email(email=account.email):
+        if self.validate.invalid_email(email=account.email):
             raise ErrorInvalidEmail()
-        if self.validate.invalid_account_cpf(cpf=account.cpf):
+        if self.validate.invalid_cpf(cpf=account.cpf):
             raise ErrorInvalidCpf()
-        if account.is_driver and self.validate.invalid_account_plate(plate=account.car_plate):
+        if self.validate.invalid_plate(plate=account, is_driver=account.is_driver):
             raise ErrorInvalidPlate()
-        account.account_id = account.get_id()
-        self._create_account(account=account)
-        return self._get_id_account_id(id=account.account_id)
-
-    def _validate_account_existent(self, email: Account):
-        return self.db.db_get(sql=AccountRepository().get_exists_account(email=email))[0][0]
-
-    def _create_account(self, account: Account):
-        return self.db.db_query(sql=AccountRepository(account).sql_create_account())
-    
-    def _get_id_account_id(self, id):
-        accounts = self.db.db_get_dict(sql=AccountRepository().get_account_id(id=id))
-        if accounts:
-            return AccountDict(**accounts[0]).account()
-        return None
-
-    def _get_list_accounts(self):
-        accounts = self.db.db_get_dict(sql=AccountRepository().get_accounts(limit=100))
-        result = []
-        for item in accounts:
-            result.append(AccountDict(**item).account())
-        return result
+        account.account_id = uuid4()
+        self.repository.insert_account(account=account)
+        return self.repository.get_account_by_id(id=account.account_id)

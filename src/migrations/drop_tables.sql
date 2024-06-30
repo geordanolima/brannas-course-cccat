@@ -1,1 +1,3 @@
-DROP TABLE IF EXISTS account;
+DROP SCHEMA IF EXISTS cccat17 cascade;
+DROP TABLE IF EXISTS cccat17.account;
+DROP TABLE IF EXISTS cccat17.ride;

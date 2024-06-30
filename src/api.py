@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Response
 
 from .controller.account_controller import AccountController
-
-from .models.account import Account
+from .models import Account, Ride
 
 app = FastAPI()
 
@@ -16,3 +15,8 @@ def simplehealth():
 def signup(account: Account):
     controller = AccountController()
     return controller.run(account=account)
+
+
+@app.post("/ride", tags=["passenger"], response_class=Response)
+def ride(ride: Ride):
+    return simplehealth()

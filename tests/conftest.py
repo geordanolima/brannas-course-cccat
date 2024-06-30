@@ -14,13 +14,14 @@ def _set_pythonpath():
 def pytest_sessionstart(session):
     _set_pythonpath()
     return session
- 
+
 
 @pytest.fixture(autouse=True, scope="session")
 def envvars(tmpdir_factory, session_mocker):
     settings = Settings()
     settings.DATABASE_NAME = "app_test"
     return settings
+
 
 @pytest.fixture(scope="session")
 def db_connection(envvars):
@@ -38,6 +39,7 @@ def db_connection(envvars):
     db.db_query(get_migrate(file_name="drop_tables"))
     return db
 
+
 @pytest.fixture(scope="session")
 def db_clear(envvars):
     settings = envvars
@@ -49,6 +51,7 @@ def db_clear(envvars):
         password=settings.DATABASE_PASS,
     )
     db.db_query(get_migrate(file_name="drop_tables"))
+
 
 def get_migrate(file_name) -> str:
     sql = ""
@@ -63,6 +66,3 @@ def db_session(db_connection):
     cursor = db_connection.connection.cursor()
     yield cursor
     cursor.close()
-
-
-

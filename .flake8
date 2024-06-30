@@ -1,0 +1,7 @@
+[flake8]
+ignore = I001, I005, BLK100
+exclude = __pycache__, migrations
+max-line-length=120
+
+[isort]
+line_length=120

@@ -1,5 +1,6 @@
 import os
 
+
 class Settings():
     DATABASE_NAME: str = os.getenv("DATABASE_NAME", "app")
     DATABASE_HOST: str = os.getenv("DATABASE_HOST", "localhost")
