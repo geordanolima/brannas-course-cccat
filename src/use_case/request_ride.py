@@ -4,7 +4,9 @@ from ..domain.constants import RideStatusEnum
 from ..domain.entities import CoordinateEntitie, RideEntitie
 from ..domain.models.ride import Ride
 from ..domain.repositories import AccountRepository, RideRepository
-from ..presenter.errors import ErrorAccountNotFound, ErrorIsInvalidUUID, ErrorIsNeedPassenger, ErrorHaveRideInProgress
+from ..presenter.errors import (
+    ErrorAccountNotFound, ErrorIsInvalidUUID, ErrorIsNeedPassenger, ErrorHaveRideInProgress, ErrorCoordinatesEquals
+)
 from ..utils.validates import Validates
 
 
@@ -30,6 +32,8 @@ class RequestRide:
             limit=1
         ):
             raise ErrorHaveRideInProgress()
+        if from_coordinate == to_coordinate:
+            raise ErrorCoordinatesEquals()
         ride = RideEntitie(
             ride_id=str(uuid4()),
             passenger_id=account.account_id,

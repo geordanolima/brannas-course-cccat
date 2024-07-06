@@ -54,3 +54,7 @@ class ErrorAccountNotFound(BaseException):
 class ErrorLoginIncorrect(BaseException):
     message = {"ERROR": "LOGIN INCORRECT!"}
     http_status = status.HTTP_401_UNAUTHORIZED
+
+
+class ErrorCoordinatesEquals(BaseException):
+    message = {"ERROR": "COORDINATES ARE SAME"}

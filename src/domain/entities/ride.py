@@ -35,4 +35,5 @@ class RideEntitie:
         )
 
     def object(self) -> Ride:
+        self._ride.date = self._ride.date.isoformat()
         return self._ride
