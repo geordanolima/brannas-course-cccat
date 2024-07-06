@@ -32,6 +32,6 @@ def signup(account_id: str):
 @app.post("/ride", tags=["passenger"], response_class=Response)
 def ride(ride: RideRequest):
     controller = RideController()
-    return controller.run(
+    return controller.create_ride(
         account=ride.passenger_id, from_coordinate=ride.from_coordinate, to_coordinate=ride.to_coordinate
     )
