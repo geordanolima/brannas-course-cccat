@@ -17,23 +17,26 @@ class AccountDatabaseRepository(AccountRepository):
     def get_exists_account(self, email: str) -> bool:
         return bool(self.db.db_get(sql=self._sql_get_exists_account(email=email))[0][0])
 
-    def get_account_by_email(self, email):
+    def get_account_by_email(self, email, hide_password: bool = True):
         account = self.db.db_get_dict(self._sql_get_account_by_email(email=email))
         if account:
-            return AccountEntitie(**account[0]).object()
+            return AccountEntitie(**account[0]).object(hide_password=hide_password)
         return None
 
     def get_account_by_id(self, id):
-        accounts = self.db.db_get_dict(sql=self._sql_get_account_by_id(id=id))
-        if accounts:
-            return AccountEntitie(**accounts[0]).object()
+        try:
+            accounts = self.db.db_get_dict(sql=self._sql_get_account_by_id(id=id))
+            if accounts:
+                return AccountEntitie(**accounts[0]).object(hide_password=True)
+        except Exception:
+            pass
         return None
 
     def get_accounts(self):
         accounts = self.db.db_get_dict(sql=self._sql_get_accounts(limit=100))
         result = []
         for item in accounts:
-            result.append(AccountEntitie(**item).object())
+            result.append(AccountEntitie(**item).object(hide_password=True))
         return result
 
     def update_account(self, account: Account, new_account: Account):

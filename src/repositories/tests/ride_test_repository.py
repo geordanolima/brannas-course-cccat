@@ -31,3 +31,8 @@ class RideTestRepository(RideRepository):
         for item in self.rides:
             if item.ride_id == ride.ride_id:
                 item.status = new_status
+
+    def get_ride_by_id(self, id: str):
+        for item in self.rides:
+            if item.ride_id == id:
+                return item

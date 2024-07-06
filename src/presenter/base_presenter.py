@@ -2,7 +2,7 @@ import json
 
 from fastapi import Response
 
-from ..utils.errors import BaseException
+from .errors import BaseException
 
 
 class BasePresenter():

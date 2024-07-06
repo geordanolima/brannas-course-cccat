@@ -44,9 +44,13 @@ class ErrorHaveRideInProgress(BaseException):
 
 
 class ErrorIsInvalidUUID(BaseException):
-    message = {"ERROR": "ID INVALID TYPE"}
+    message = {"ERROR": "ID INVALID"}
 
 
-class ErrorAccountNotFound():
+class ErrorAccountNotFound(BaseException):
     message = {"ERROR": "ACCOUNT NOT FOUND"}
     http_status = status.HTTP_404_NOT_FOUND
+
+class ErrorLoginIncorrect(BaseException):
+    message = {"ERROR": "LOGIN INCORRECT!"}
+    http_status = status.HTTP_401_UNAUTHORIZED

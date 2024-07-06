@@ -14,10 +14,10 @@ class Ride(BaseModel):
     status: int = RideStatusEnum.CREATED.value
     fare: float | None
     distance: float | None
-    from_lat: float | None
-    from_long: float | None
-    to_lat: float | None
-    to_long: float | None
+    from_latitudeitude: float | None
+    from_longitudeitude: float | None
+    to_latitudeitude: float | None
+    to_longitude: float | None
     date: datetime | None
 
     MACHINE_STATUS = [

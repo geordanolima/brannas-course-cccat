@@ -14,10 +14,10 @@ class RideEntitie:
         driver_id: str = None,
         fare: float = None,
         distance: float = None,
-        from_lat: float = None,
-        from_long: float = None,
-        to_lat: float = None,
-        to_long: float = None,
+        from_latitude: float = None,
+        from_longitude: float = None,
+        to_latitude: float = None,
+        to_longitude: float = None,
         date: datetime = datetime.now(),
     ):
         self._ride = Ride(
@@ -27,10 +27,10 @@ class RideEntitie:
             status=status,
             fare=fare,
             distance=distance,
-            from_lat=from_lat,
-            from_long=from_long,
-            to_lat=to_lat,
-            to_long=to_long,
+            from_latitude=from_latitude,
+            from_longitude=from_longitude,
+            to_latitude=to_latitude,
+            to_longitude=to_longitude,
             date=date,
         )
 

@@ -4,9 +4,9 @@ import pytest
 from src.domain.constants import RideStatusEnum
 from src.domain.entities import AccountEntitie, CoordinateEntitie, RideEntitie
 from src.domain.models import Account, Ride
+from src.presenter.errors import ErrorHaveRideInProgress, ErrorIsNeedPassenger
 from src.repositories.tests import AccountTestRepository, RideTestRepository
-from src.use_case.route import Route
-from src.utils.errors import ErrorHaveRideInProgress, ErrorIsNeedPassenger
+from src.use_case.request_ride import RequestRide
 
 
 account_repository = AccountTestRepository(db=None)
@@ -38,7 +38,7 @@ def create_ride(account_passenger, account_driver) -> Ride:
 
 @pytest.fixture
 def account_not_passenger(create_account) -> Account:
-    account = AccountEntitie(**create_account.dict())
+    account = AccountEntitie(**create_account.dict()).object()
     account.is_passenger = False
     account_repository.insert_account(account=account)
     return account
@@ -84,7 +84,7 @@ def to_coord() -> CoordinateEntitie:
 
 def test_ride_is_not_passenger(account_not_passenger, from_coord, to_coord):
     with pytest.raises(ErrorIsNeedPassenger):
-        use_case = Route(ride_repository=ride_repository, passenger_repository=account_repository)
+        use_case = RequestRide(ride_repository=ride_repository, passenger_repository=account_repository)
         use_case.create_new_route(
             account_id=account_not_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
         )
@@ -94,14 +94,14 @@ def test_passenger_have_other_ride_in_progress(
     account_passenger, ride_in_progress, from_coord, to_coord
 ):
     with pytest.raises(ErrorHaveRideInProgress):
-        use_case = Route(ride_repository=ride_repository, passenger_repository=account_repository)
+        use_case = RequestRide(ride_repository=ride_repository, passenger_repository=account_repository)
         use_case.create_new_route(
             account_id=account_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
         )
 
 
 def test_new_ride(account_passenger, from_coord, to_coord):
-    use_case = Route(ride_repository=ride_repository, passenger_repository=account_repository)
+    use_case = RequestRide(ride_repository=ride_repository, passenger_repository=account_repository)
     ride = use_case.create_new_route(
         account_id=account_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
     )

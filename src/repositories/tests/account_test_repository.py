@@ -12,14 +12,17 @@ class AccountTestRepository(AccountRepository):
         self.accounts.append(account)
         return account
 
-    def get_account_by_email(self, email: str) -> Account:
+    def get_account_by_email(self, email: str, hide_password: bool = True) -> Account:
         for account in self.accounts:
             if account.email == email:
+                if hide_password:
+                    account.password = "***********"
                 return account
 
     def get_account_by_id(self, id: str) -> Account:
         for account in self.accounts:
             if account.account_id == id:
+                account.password = "***********"
                 return account
 
     def get_accounts(self, limit: int = None) -> list[Account]:

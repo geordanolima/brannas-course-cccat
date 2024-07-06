@@ -19,7 +19,7 @@ class AccountRepository(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def get_account_by_email(self, email) -> Account:
+    def get_account_by_email(self, email: str, hide_password: bool = True) -> Account:
         ...
 
     @abc.abstractmethod

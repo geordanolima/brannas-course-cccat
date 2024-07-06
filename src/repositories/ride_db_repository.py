@@ -47,12 +47,12 @@ class RideDatabaseRepository(RideRepository):
 
     def _sql_insert_ride(self, ride: Ride) -> str:
         sql = """INSERT INTO {table}
-            (ride_id, passenger_id, driver_id, status, fare, distance, from_lat, from_long, to_lat, to_long, "date")
+            (ride_id, passenger_id, driver_id, status, fare, distance, from_latitude, from_longitude, to_latitude, to_longitude, "date")
             VALUES
             (
                 '{ride_id}'::uuid, '{passenger_id}'::uuid, '{driver_id}'::uuid,
-                {status}, {fare}, {distance}, {from_lat},
-                {from_long}, {to_lat}, {to_long}, '{date}'
+                {status}, {fare}, {distance}, {from_latitude},
+                {from_longitude}, {to_latitude}, {to_longitude}, '{date}'
             );
         """
         return sql.format(
@@ -63,10 +63,10 @@ class RideDatabaseRepository(RideRepository):
             status=ride.status,
             fare=ride.fare,
             distance=ride.distance,
-            from_lat=ride.from_lat,
-            from_long=ride.from_long,
-            to_lat=ride.to_lat,
-            to_long=ride.to_long,
+            from_latitude=ride.from_latitude,
+            from_longitude=ride.from_longitude,
+            to_latitude=ride.to_latitude,
+            to_longitude=ride.to_longitude,
             date=ride.date,
         ).replace("'None'", "Null").replace("None", "Null")
 

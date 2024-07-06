@@ -1,3 +1,4 @@
+from .cpf import Cpf
 from src.domain.models import Account
 
 
@@ -18,11 +19,13 @@ class AccountEntitie:
             name=name,
             email=email,
             password=password,
-            cpf=cpf,
+            cpf=Cpf(cpf).get_cpf(),
             is_passenger=is_passenger,
             is_driver=is_driver,
             car_plate=car_plate,
         )
 
-    def object(self):
+    def object(self, hide_password: bool = False):
+        if hide_password:
+            self._account.password = "**********"
         return self._account

@@ -2,16 +2,16 @@ from uuid import uuid4
 
 import pytest
 
-from src.repositories.tests import AccountTestRepository
 from src.domain.models import Account
-from src.use_case import Signup
-from src.utils.errors import (
+from src.presenter.errors import (
     ErrorAccountExistent,
     ErrorInvalidCpf,
     ErrorInvalidEmail,
     ErrorInvalidName,
     ErrorInvalidPlate,
 )
+from src.repositories.tests import AccountTestRepository
+from src.use_case import Signup
 
 @pytest.fixture
 def create_account() -> Account:

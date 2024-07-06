@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 
 class Account(BaseModel):
-    account_id: str = uuid4()
+    account_id: str = str(uuid4())
     name: str
     email: str
     password: str
