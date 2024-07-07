@@ -47,7 +47,8 @@ class AccountDatabaseRepository(AccountRepository):
 
     def _sql_insert_account(self, account) -> str:
         sql = """INSERT INTO {table} (account_id, "name", email, password, cpf, car_plate, is_passenger, is_driver)
-            VALUES ('{account_id}', '{name}', '{email}', '{password}', '{cpf}', '{car_plate}', {is_passenger}, {is_driver});
+            VALUES ('{account_id}', '{name}', '{email}', '{password}',
+            '{cpf}', '{car_plate}', {is_passenger}, {is_driver});
         """
         return sql.format(
             table=self.table,

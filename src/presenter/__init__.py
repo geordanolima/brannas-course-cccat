@@ -1,3 +1,35 @@
 from .base_presenter import BasePresenter
+from .errors import (
+    ErrorInvalidCpf,
+    ErrorInvalidEmail,
+    ErrorInvalidName,
+    ErrorAccountExistent,
+    ErrorInvalidPlate,
+    ErrorIsNeedPassenger,
+    ErrorIsNeedDriver,
+    ErrorHaveRideInProgress,
+    ErrorIsInvalidUUID,
+    ErrorAccountNotFound,
+    ErrorLoginIncorrect,
+    ErrorCoordinatesEquals,
+    ErrorRideInProgress,
+    ErrorRideNotFound,
+)
 
-__all__ = (BasePresenter)
+__all__ = (
+    BasePresenter,
+    ErrorInvalidCpf,
+    ErrorInvalidEmail,
+    ErrorInvalidName,
+    ErrorAccountExistent,
+    ErrorInvalidPlate,
+    ErrorIsNeedPassenger,
+    ErrorIsNeedDriver,
+    ErrorHaveRideInProgress,
+    ErrorIsInvalidUUID,
+    ErrorAccountNotFound,
+    ErrorLoginIncorrect,
+    ErrorCoordinatesEquals,
+    ErrorRideInProgress,
+    ErrorRideNotFound,
+)

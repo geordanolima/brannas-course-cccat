@@ -14,10 +14,9 @@ class RideStatusEnum(ValueConstructibleEnum):
     CREATED = 0
     CANCELED = 1
     ERROR = 2
-    PENDING_ACCEPT = 3
-    ACCEPT = 4
-    IN_PROGRESS = 5
-    PENDING_PAY = 6
-    PAY_FAIL = 7
-    PENDING_RATE = 8
-    FINISHED = 9
+    ACCEPT = 3
+    IN_PROGRESS = 4
+    PENDING_PAY = 5
+    PAY_FAIL = 6
+    PENDING_RATE = 7
+    FINISHED = 8

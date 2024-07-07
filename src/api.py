@@ -18,13 +18,13 @@ def signup(account: Account):
 
 
 @app.post("/login", tags=["account"], response_class=Response)
-def signup(login: LoginRequest):
+def login(login: LoginRequest):
     controller = AccountController()
     return controller.login(login=login)
 
 
 @app.get("/account/{account_id}", tags=["account"], response_class=Response)
-def signup(account_id: str):
+def get_account(account_id: str):
     controller = AccountController()
     return controller.get_account_by_id(account_id=account_id)
 

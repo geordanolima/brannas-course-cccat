@@ -1,4 +1,5 @@
 import re
+
 from ...presenter.errors import ErrorInvalidCpf
 
 
@@ -10,10 +11,10 @@ class Cpf:
         if self._is_invalid_cpf(cpf=cpf):
             raise ErrorInvalidCpf()
         self.value = self._get_only_numbers(value=cpf)
-    
+
     def get_cpf(self) -> str:
         return self.value
-    
+
     def _is_invalid_cpf(self, cpf):
         return not self._validate_cpf(raw_cpf=cpf)
 

@@ -1,6 +1,5 @@
-
-from .database import Database
 from settings import Settings
+from src.database import Database
 
 
 class DatabaseProvider:

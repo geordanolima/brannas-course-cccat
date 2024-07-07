@@ -39,6 +39,10 @@ class ErrorIsNeedPassenger(BaseException):
     message = {"ERROR": "IS NEED PASSENGER, TO EXECUTE THIS ACTION"}
 
 
+class ErrorIsNeedDriver(BaseException):
+    message = {"ERROR": "IS NEED DRIVER, TO EXECUTE THIS ACTION"}
+
+
 class ErrorHaveRideInProgress(BaseException):
     message = {"ERROR": "HAVE A RIDE IN PROGRESS"}
 
@@ -51,6 +55,7 @@ class ErrorAccountNotFound(BaseException):
     message = {"ERROR": "ACCOUNT NOT FOUND"}
     http_status = status.HTTP_404_NOT_FOUND
 
+
 class ErrorLoginIncorrect(BaseException):
     message = {"ERROR": "LOGIN INCORRECT!"}
     http_status = status.HTTP_401_UNAUTHORIZED
@@ -58,3 +63,12 @@ class ErrorLoginIncorrect(BaseException):
 
 class ErrorCoordinatesEquals(BaseException):
     message = {"ERROR": "COORDINATES ARE SAME"}
+
+
+class ErrorRideInProgress(BaseException):
+    message = {"ERROR": "RIDE IN PROGRESS"}
+
+
+class ErrorRideNotFound(BaseException):
+    message = {"ERROR": "RIDE NOT FOUND"}
+    http_status = status.HTTP_404_NOT_FOUND

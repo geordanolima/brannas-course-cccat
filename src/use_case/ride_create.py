@@ -5,18 +5,22 @@ from ..domain.entities import CoordinateEntitie, RideEntitie
 from ..domain.models.ride import Ride
 from ..domain.repositories import AccountRepository, RideRepository
 from ..presenter.errors import (
-    ErrorAccountNotFound, ErrorIsInvalidUUID, ErrorIsNeedPassenger, ErrorHaveRideInProgress, ErrorCoordinatesEquals
+    ErrorAccountNotFound,
+    ErrorCoordinatesEquals,
+    ErrorHaveRideInProgress,
+    ErrorIsInvalidUUID,
+    ErrorIsNeedPassenger,
 )
 from ..utils.validates import Validates
 
 
-class RequestRide:
+class RideCreate:
     def __init__(self, ride_repository: RideRepository, passenger_repository: AccountRepository) -> None:
         self._account_repository = passenger_repository
         self._ride_repository = ride_repository
         self._validate = Validates()
 
-    def create_new_route(
+    def run(
         self, account_id: str, from_coordinate: CoordinateEntitie, to_coordinate: CoordinateEntitie
     ) -> Ride:
         if not self._validate.is_uuid(id=account_id):

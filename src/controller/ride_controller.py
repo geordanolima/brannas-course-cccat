@@ -2,7 +2,7 @@ from ..domain.entities.coordinate import CoordinateEntitie
 from ..provider import DatabaseProvider
 from ..presenter.base_presenter import BasePresenter
 from ..repositories import AccountDatabaseRepository, RideDatabaseRepository
-from ..use_case.request_ride import RequestRide
+from ..use_case.ride_create import UCRide
 
 
 class RideController:
@@ -14,8 +14,8 @@ class RideController:
 
     def create_ride(self, account: str, from_coordinate: CoordinateEntitie, to_coordinate: CoordinateEntitie):
         try:
-            use_case = RequestRide(passenger_repository=self._account_repository, ride_repository=self._ride_repository)
-            ride = use_case.create_new_route(
+            use_case = UCRide(passenger_repository=self._account_repository, ride_repository=self._ride_repository)
+            ride = use_case.run(
                 account_id=account,
                 from_coordinate=from_coordinate,
                 to_coordinate=to_coordinate

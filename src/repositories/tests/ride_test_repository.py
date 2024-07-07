@@ -13,11 +13,13 @@ class RideTestRepository(RideRepository):
         self.rides.append(ride)
         return ride
 
-    def get_rides_by_driver(self, driver_id: str, status: RideStatusEnum, limit: int) -> list[Ride]:
+    def get_rides_by_driver(self, driver_id: str, status_in: RideStatusEnum, limit: int = 1) -> list[Ride]:
         result = []
         for ride in self.rides:
-            if ride.driver_id == driver_id and ride.status == status:
+            if ride.driver_id == driver_id and ride.status in status_in:
                 result.append(ride)
+                if len(result) == limit:
+                    return result
         return result
 
     def get_rides_by_passenger(self, passenger_id: str, status_not_in: list[int], limit: int) -> list[Ride]:
@@ -35,4 +37,10 @@ class RideTestRepository(RideRepository):
     def get_ride_by_id(self, id: str):
         for item in self.rides:
             if item.ride_id == id:
+                return item
+
+    def update_driver_ride(self, ride: Ride, driver_id: int):
+        for item in self.rides:
+            if item.ride_id == ride.ride_id:
+                item.driver_id = driver_id
                 return item

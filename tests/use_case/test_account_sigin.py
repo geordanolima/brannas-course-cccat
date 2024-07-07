@@ -11,7 +11,8 @@ from src.presenter.errors import (
     ErrorInvalidPlate,
 )
 from src.repositories.tests import AccountTestRepository
-from src.use_case import Signup
+from src.use_case import Sigin
+
 
 @pytest.fixture
 def create_account() -> Account:
@@ -75,36 +76,36 @@ def repository() -> AccountTestRepository:
 
 def test_account_existent(populate_account, repository):
     with pytest.raises(ErrorAccountExistent):
-        signup = Signup(repository=repository)
-        signup.sigin(account=populate_account)
+        signup = Sigin(repository=repository)
+        signup.run(account=populate_account)
 
 
 def test_account_not_existent(repository, create_account):
-    signup = Signup(repository=repository)
-    registered: Account = signup.sigin(account=create_account)
+    signup = Sigin(repository=repository)
+    registered: Account = signup.run(account=create_account)
     id = repository.get_account_by_id(id=registered.account_id).account_id
     assert registered.account_id == id
 
 
 def test_account_invalid_name(repository, create_account_invalid_name):
     with pytest.raises(ErrorInvalidName):
-        signup = Signup(repository=repository)
-        signup.sigin(account=create_account_invalid_name)
+        signup = Sigin(repository=repository)
+        signup.run(account=create_account_invalid_name)
 
 
 def test_account_invalid_email(create_account_invalid_email, repository):
     with pytest.raises(ErrorInvalidEmail):
-        signup = Signup(repository=repository)
-        signup.sigin(account=create_account_invalid_email)
+        signup = Sigin(repository=repository)
+        signup.run(account=create_account_invalid_email)
 
 
 def test_account_invalid_cpf(create_account_invalid_cpf, repository):
     with pytest.raises(ErrorInvalidCpf):
-        signup = Signup(repository=repository)
-        signup.sigin(account=create_account_invalid_cpf)
+        signup = Sigin(repository=repository)
+        signup.run(account=create_account_invalid_cpf)
 
 
 def test_account_driver_invalid_plate(create_account_invalid_plate, repository):
     with pytest.raises(ErrorInvalidPlate):
-        signup = Signup(repository=repository)
-        signup.sigin(account=create_account_invalid_plate)
+        signup = Sigin(repository=repository)
+        signup.run(account=create_account_invalid_plate)

@@ -1,8 +1,7 @@
 from datetime import datetime
 
-from ...domain.constants import RideStatusEnum
-
-from ..models.ride import Ride
+from src.domain.constants import RideStatusEnum
+from src.domain.models import Ride
 
 
 class RideEntitie:

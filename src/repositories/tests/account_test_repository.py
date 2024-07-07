@@ -1,6 +1,7 @@
 from src.database import Database
 from src.domain.models.account import Account
 from src.domain.repositories import AccountRepository
+from src.utils.passwords import Password
 
 
 class AccountTestRepository(AccountRepository):
@@ -9,6 +10,8 @@ class AccountTestRepository(AccountRepository):
         self.accounts: list[Account] = []
 
     def insert_account(self, account: Account):
+        account = Account(**account.dict())
+        account.password = Password().cryptography_password(password=account.password)
         self.accounts.append(account)
         return account
 
