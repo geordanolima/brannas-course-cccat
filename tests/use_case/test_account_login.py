@@ -35,17 +35,17 @@ def repository() -> AccountTestRepository:
 
 def test_account_not_exists(create_account, repository):
     with pytest.raises(ErrorLoginIncorrect):
-        login = Login(repository=repository)
-        login.run(email=create_account.email, password=create_account.password)
+        use_case = Login(repository=repository)
+        use_case.run(email=create_account.email, password=create_account.password)
 
 
 def test_password_incorrect(populate_account, repository):
     with pytest.raises(ErrorLoginIncorrect):
-        login = Login(repository=repository)
-        login.run(email=populate_account.email, password=f"fail-{populate_account.password}")
+        use_case = Login(repository=repository)
+        use_case.run(email=populate_account.email, password=f"fail-{populate_account.password}")
 
 
 def test_login_success(repository, populate_account, create_account):
-    login = Login(repository=repository)
-    account = login.run(email=create_account.email, password=create_account.password)
+    use_case = Login(repository=repository)
+    account = use_case.run(email=create_account.email, password=create_account.password)
     assert account.account_id == populate_account.account_id

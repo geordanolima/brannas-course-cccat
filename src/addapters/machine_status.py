@@ -10,6 +10,9 @@ class MachineStatus:
         return new_status in self._get_permitted_next_status(current_status=current_status)
 
     def _get_permitted_next_status(self, current_status):
+        result = []
         for status in self._machine:
-            if status.get("current_status") == current_status:
-                return status.get("permitted_next_status", [])
+            if status.get("current_status").value == current_status:
+                for permited_status in status.get("permitted_next_status", []):
+                    result.append(permited_status.value)
+        return result

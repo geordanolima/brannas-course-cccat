@@ -72,3 +72,7 @@ class ErrorRideInProgress(BaseException):
 class ErrorRideNotFound(BaseException):
     message = {"ERROR": "RIDE NOT FOUND"}
     http_status = status.HTTP_404_NOT_FOUND
+
+
+class ErrorStatusNotAllowed(BaseException):
+    message = {"ERROR": "STATUS NOT ALLOWED"}

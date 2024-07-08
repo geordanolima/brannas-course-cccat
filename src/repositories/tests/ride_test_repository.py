@@ -39,8 +39,8 @@ class RideTestRepository(RideRepository):
             if item.ride_id == id:
                 return item
 
-    def update_driver_ride(self, ride: Ride, driver_id: int):
+    def update_driver_ride(self, ride: Ride, id_driver: int):
         for item in self.rides:
             if item.ride_id == ride.ride_id:
-                item.driver_id = driver_id
+                item.driver_id = id_driver
                 return item

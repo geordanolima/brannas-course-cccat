@@ -32,7 +32,7 @@ class RideDatabaseRepository(RideRepository):
             result.append(RideEntitie(**ride).object())
         return result
 
-    def update_status_ride(self, ride: Ride, new_status: RideStatusEnum) -> Ride:
+    def update_status_ride(self, ride: Ride, new_status: int) -> Ride:
         return self._db.db_query(sql=self._sql_update_status_ride(ride=ride, new_status=new_status))
 
     def update_driver_ride(self, ride: Ride, id_driver: int):
@@ -77,7 +77,7 @@ class RideDatabaseRepository(RideRepository):
 
     def _sql_get_rides_by_driver(self, driver_id: str, status_in: RideStatusEnum, limit: int = 50) -> str:
         sql = """SELECT * FROM {table}
-        WHERE driver_id = {driver_id}
+        WHERE driver_id = '{driver_id}'::uuid
           AND status in {status}
         LIMIT {limit}"""
         return sql.format(table=self.table, driver_id=driver_id, status=tuple(status_in), limit=limit)
@@ -91,10 +91,10 @@ class RideDatabaseRepository(RideRepository):
         LIMIT {limit}"""
         return sql.format(table=self.table, status=tuple(status_not_in), passenger_id=passenger_id, limit=limit)
 
-    def _sql_update_status_ride(self, ride: Ride, new_status: RideStatusEnum) -> str:
+    def _sql_update_status_ride(self, ride: Ride, new_status: int) -> str:
         sql = """UPDATE {table} SET "status" = {new_status} WHERE "ride_id" = '{ride_id}'::uuid;"""
         return sql.format(table=self.table, new_status=new_status, ride_id=ride.ride_id)
 
-    def _sql_update_driver_ride(self, ride: Ride, driver_id: str) -> str:
+    def _sql_update_driver_ride(self, ride: Ride, id_driver: str) -> str:
         sql = """UPDATE {table} SET "driver_id" = '{driver_id}'::uuid WHERE "ride_id" = '{ride_id}'::uuid;"""
-        return sql.format(table=self.table, driver_id=driver_id, ride_id=ride.ride_id)
+        return sql.format(table=self.table, driver_id=id_driver, ride_id=ride.ride_id)

@@ -76,36 +76,36 @@ def repository() -> AccountTestRepository:
 
 def test_account_existent(populate_account, repository):
     with pytest.raises(ErrorAccountExistent):
-        signup = Sigin(repository=repository)
-        signup.run(account=populate_account)
+        use_case = Sigin(repository=repository)
+        use_case.run(account=populate_account)
 
 
 def test_account_not_existent(repository, create_account):
-    signup = Sigin(repository=repository)
-    registered: Account = signup.run(account=create_account)
+    use_case = Sigin(repository=repository)
+    registered: Account = use_case.run(account=create_account)
     id = repository.get_account_by_id(id=registered.account_id).account_id
     assert registered.account_id == id
 
 
 def test_account_invalid_name(repository, create_account_invalid_name):
     with pytest.raises(ErrorInvalidName):
-        signup = Sigin(repository=repository)
-        signup.run(account=create_account_invalid_name)
+        use_case = Sigin(repository=repository)
+        use_case.run(account=create_account_invalid_name)
 
 
 def test_account_invalid_email(create_account_invalid_email, repository):
     with pytest.raises(ErrorInvalidEmail):
-        signup = Sigin(repository=repository)
-        signup.run(account=create_account_invalid_email)
+        use_case = Sigin(repository=repository)
+        use_case.run(account=create_account_invalid_email)
 
 
 def test_account_invalid_cpf(create_account_invalid_cpf, repository):
     with pytest.raises(ErrorInvalidCpf):
-        signup = Sigin(repository=repository)
-        signup.run(account=create_account_invalid_cpf)
+        use_case = Sigin(repository=repository)
+        use_case.run(account=create_account_invalid_cpf)
 
 
 def test_account_driver_invalid_plate(create_account_invalid_plate, repository):
     with pytest.raises(ErrorInvalidPlate):
-        signup = Sigin(repository=repository)
-        signup.run(account=create_account_invalid_plate)
+        use_case = Sigin(repository=repository)
+        use_case.run(account=create_account_invalid_plate)

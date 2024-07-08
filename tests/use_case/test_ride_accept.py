@@ -12,6 +12,7 @@ from src.presenter import (
     ErrorIsNeedDriver,
     ErrorRideInProgress,
     ErrorHaveRideInProgress,
+    ErrorStatusNotAllowed,
 )
 from src.repositories.tests import AccountTestRepository, RideTestRepository
 from src.use_case import RideAccept
@@ -88,6 +89,15 @@ def ride_created(create_ride, ride_repository):
     return ride_repository.insert_ride(ride=ride_created)
 
 
+@pytest.fixture
+def ride_canceled(create_ride, ride_repository):
+    ride_status_not_allowed = Ride(**create_ride.dict())
+    ride_status_not_allowed.ride_id = str(uuid4())
+    ride_status_not_allowed.driver_id = ""
+    ride_status_not_allowed.status = RideStatusEnum.CANCELED.value
+    return ride_repository.insert_ride(ride=ride_status_not_allowed)
+
+
 def test_accept_ride_uuid_invalid(account_repository, ride_repository):
     with pytest.raises(ErrorIsInvalidUUID):
         use_case = RideAccept(passenger_repository=account_repository, ride_repository=ride_repository)
@@ -112,18 +122,19 @@ def test_accept_ride_is_not_driver(account_repository, ride_repository, account_
         use_case.run(driver_id=account_passenger.account_id, ride_id=str(uuid4()))
 
 
-def test_accept_ride_in_progress(account_repository, ride_repository, account_driver, ride_in_progress):
-    with pytest.raises(ErrorRideInProgress):
-        use_case = RideAccept(passenger_repository=account_repository, ride_repository=ride_repository)
-        use_case.run(driver_id=account_driver.account_id, ride_id=ride_in_progress.ride_id)
-
-
 def test_accept_driver_have_other_ride(
     account_repository, ride_repository, account_driver, ride_in_progress, ride_created
 ):
     with pytest.raises(ErrorHaveRideInProgress):
         use_case = RideAccept(passenger_repository=account_repository, ride_repository=ride_repository)
         use_case.run(driver_id=account_driver.account_id, ride_id=ride_created.ride_id)
+
+
+def test_accept_ride_status_not_alowed(account_repository, ride_repository, account_driver, ride_canceled):
+    with pytest.raises(ErrorStatusNotAllowed):
+        use_case = RideAccept(passenger_repository=account_repository, ride_repository=ride_repository)
+        use_case.run(driver_id=account_driver.account_id, ride_id=ride_canceled.ride_id)
+
 
 
 def test_accept_ride_success(account_repository, ride_repository, account_driver, ride_created):

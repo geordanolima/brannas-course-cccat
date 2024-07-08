@@ -109,7 +109,3 @@ def test_new_ride(account_passenger, from_coord, to_coord):
         account_id=account_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
     )
     assert ride.status == RideStatusEnum.CREATED.value
-
-
-def test_accept_ride():
-    pass

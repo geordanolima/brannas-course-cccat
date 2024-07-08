@@ -1,12 +1,12 @@
 from ..domain.constants import RideStatusEnum
 from ..domain.repositories import AccountRepository, RideRepository
-from ..presenter.errors import (
+from ..presenter import (
     ErrorAccountNotFound,
     ErrorHaveRideInProgress,
     ErrorIsInvalidUUID,
     ErrorIsNeedDriver,
-    ErrorRideInProgress,
     ErrorRideNotFound,
+    ErrorStatusNotAllowed,
 )
 from ..utils.validates import Validates
 
@@ -28,16 +28,15 @@ class RideAccept:
         ride = self._ride_repository.get_ride_by_id(id=ride_id)
         if not ride:
             raise ErrorRideNotFound()
-        if ride.status != RideStatusEnum.CREATED.value:
-            raise ErrorRideInProgress()
+        if not ride.validate_next_state(new_status=RideStatusEnum.ACCEPT.value):
+            raise ErrorStatusNotAllowed()
         if self._ride_repository.get_rides_by_driver(driver_id=driver_id, status_in=[
             RideStatusEnum.ACCEPT.value,
             RideStatusEnum.IN_PROGRESS.value,
             RideStatusEnum.PENDING_PAY.value,
             RideStatusEnum.PENDING_RATE.value
-        ]):
+        ], limit=1):
             raise ErrorHaveRideInProgress()
-        # maquina de estado
-        self._ride_repository.update_driver_ride(ride=ride, driver_id=driver_id)
+        self._ride_repository.update_driver_ride(ride=ride, id_driver=driver_id)
         self._ride_repository.update_status_ride(ride=ride, new_status=RideStatusEnum.ACCEPT.value)
         return self._ride_repository.get_ride_by_id(id=ride_id)
