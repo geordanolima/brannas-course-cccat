@@ -10,7 +10,6 @@ from src.presenter import (
     ErrorAccountNotFound,
     ErrorRideNotFound,
     ErrorIsNeedDriver,
-    ErrorRideInProgress,
     ErrorHaveRideInProgress,
     ErrorStatusNotAllowed,
 )
@@ -134,7 +133,6 @@ def test_accept_ride_status_not_alowed(account_repository, ride_repository, acco
     with pytest.raises(ErrorStatusNotAllowed):
         use_case = RideAccept(passenger_repository=account_repository, ride_repository=ride_repository)
         use_case.run(driver_id=account_driver.account_id, ride_id=ride_canceled.ride_id)
-
 
 
 def test_accept_ride_success(account_repository, ride_repository, account_driver, ride_created):

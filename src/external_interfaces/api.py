@@ -38,12 +38,12 @@ def ride(ride: RideRequest):
 
 
 @app.patch("/ride/accept", tags=["passenger"], response_class=Response)
-def ride(ride_accept: RideUpdateStatusRequest):
+def ride_accept(ride_accept: RideUpdateStatusRequest):
     controller = RideController()
     return controller.accept_ride(ride_id=ride_accept.ride_id, driver_id=ride_accept.driver_id)
 
 
 @app.get("/ride/{ride_id}", tags=["passenger"], response_class=Response)
-def ride(ride_id: str):
+def ride_by_id(ride_id: str):
     controller = RideController()
     return controller.get_ride(ride_id=ride_id)
