@@ -14,6 +14,7 @@ from .errors import (
     ErrorCoordinatesEquals,
     ErrorRideInProgress,
     ErrorRideNotFound,
+    ErrorRideOfOtherDriver,
     ErrorStatusNotAllowed,
 )
 
@@ -33,5 +34,6 @@ __all__ = (
     ErrorCoordinatesEquals,
     ErrorRideInProgress,
     ErrorRideNotFound,
+    ErrorRideOfOtherDriver,
     ErrorStatusNotAllowed,
 )

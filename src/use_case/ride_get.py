@@ -7,4 +7,4 @@ class RideGet:
         self._ride_repository = ride_repository
 
     def run(self, ride_id: str) -> Ride:
-        return self._ride_repository.get_ride_by_id(id=ride_id)
+        return self._ride_repository.get_ride_by_id(id=ride_id, response=True)

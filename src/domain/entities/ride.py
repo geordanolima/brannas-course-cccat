@@ -33,6 +33,8 @@ class RideEntitie:
             date=date,
         )
 
-    def object(self) -> Ride:
+    def object(self, response: bool = False) -> Ride:
         self._ride.date = self._ride.date.isoformat()
+        if response:
+            self._ride.status = RideStatusEnum.create_from_value(self._ride.status).name
         return self._ride

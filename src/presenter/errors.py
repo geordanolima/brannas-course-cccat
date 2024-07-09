@@ -14,6 +14,24 @@ class BaseException(Exception):
         return self.message, self.http_status
 
 
+class ErrorAccountExistent(BaseException):
+    message = {"ERROR": "ACCOUNT EXISTENT", "CODE": -4}
+    http_status = status.HTTP_409_CONFLICT
+
+
+class ErrorAccountNotFound(BaseException):
+    message = {"ERROR": "ACCOUNT NOT FOUND"}
+    http_status = status.HTTP_404_NOT_FOUND
+
+
+class ErrorCoordinatesEquals(BaseException):
+    message = {"ERROR": "COORDINATES ARE SAME"}
+
+
+class ErrorHaveRideInProgress(BaseException):
+    message = {"ERROR": "HAVE A RIDE IN PROGRESS"}
+
+
 class ErrorInvalidCpf(BaseException):
     message = {"ERROR": "INVALID CPF", "CODE": -1}
 
@@ -26,43 +44,25 @@ class ErrorInvalidName(BaseException):
     message = {"ERROR": "INVALID NAME", "CODE": -3}
 
 
-class ErrorAccountExistent(BaseException):
-    message = {"ERROR": "ACCOUNT EXISTENT", "CODE": -4}
-    http_status = status.HTTP_409_CONFLICT
-
-
 class ErrorInvalidPlate(BaseException):
     message = {"ERROR": "INVALID PLATE", "CODE": -5}
-
-
-class ErrorIsNeedPassenger(BaseException):
-    message = {"ERROR": "IS NEED PASSENGER, TO EXECUTE THIS ACTION"}
 
 
 class ErrorIsNeedDriver(BaseException):
     message = {"ERROR": "IS NEED DRIVER, TO EXECUTE THIS ACTION"}
 
 
-class ErrorHaveRideInProgress(BaseException):
-    message = {"ERROR": "HAVE A RIDE IN PROGRESS"}
+class ErrorIsNeedPassenger(BaseException):
+    message = {"ERROR": "IS NEED PASSENGER, TO EXECUTE THIS ACTION"}
 
 
 class ErrorIsInvalidUUID(BaseException):
     message = {"ERROR": "ID INVALID"}
 
 
-class ErrorAccountNotFound(BaseException):
-    message = {"ERROR": "ACCOUNT NOT FOUND"}
-    http_status = status.HTTP_404_NOT_FOUND
-
-
 class ErrorLoginIncorrect(BaseException):
     message = {"ERROR": "LOGIN INCORRECT!"}
     http_status = status.HTTP_401_UNAUTHORIZED
-
-
-class ErrorCoordinatesEquals(BaseException):
-    message = {"ERROR": "COORDINATES ARE SAME"}
 
 
 class ErrorRideInProgress(BaseException):
@@ -72,6 +72,10 @@ class ErrorRideInProgress(BaseException):
 class ErrorRideNotFound(BaseException):
     message = {"ERROR": "RIDE NOT FOUND"}
     http_status = status.HTTP_404_NOT_FOUND
+
+
+class ErrorRideOfOtherDriver(BaseException):
+    message = {"ERROR": "RIDE OF OTHER DRIVER"}
 
 
 class ErrorStatusNotAllowed(BaseException):

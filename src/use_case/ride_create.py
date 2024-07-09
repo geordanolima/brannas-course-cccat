@@ -46,5 +46,4 @@ class RideCreate:
             to_latitude=to_coordinate.latitude,
             to_longitude=to_coordinate.longitude
         ).object()
-        self._ride_repository.insert_ride(ride=ride)
-        return self._ride_repository.get_ride_by_id(id=ride.ride_id)
+        return self._ride_repository.insert_ride(ride=ride)

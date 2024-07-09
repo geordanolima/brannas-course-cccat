@@ -14,7 +14,7 @@ class RideRepository(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def get_ride_by_id(self, id: str) -> Ride:
+    def get_ride_by_id(self, id: str, response: bool = False) -> Ride:
         ...
 
     @abc.abstractmethod
@@ -26,9 +26,9 @@ class RideRepository(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def update_status_ride(self, ride: Ride, new_status: int):
+    def update_status_ride(self, ride: Ride, new_status: int) -> Ride:
         ...
 
     @abc.abstractmethod
-    def update_driver_ride(self, ride: Ride, id_driver: int):
+    def update_driver_ride(self, ride: Ride, id_driver: int) -> Ride:
         ...

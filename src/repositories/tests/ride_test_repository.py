@@ -33,10 +33,13 @@ class RideTestRepository(RideRepository):
         for item in self.rides:
             if item.ride_id == ride.ride_id:
                 item.status = new_status
+        return self.get_ride_by_id(id=ride.ride_id, response=True)
 
-    def get_ride_by_id(self, id: str):
+    def get_ride_by_id(self, id: str, response: bool = False):
         for item in self.rides:
             if item.ride_id == id:
+                if response:
+                    item.status = RideStatusEnum.create_from_value(item.status).name
                 return item
 
     def update_driver_ride(self, ride: Ride, id_driver: int):

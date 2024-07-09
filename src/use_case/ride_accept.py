@@ -16,6 +16,7 @@ class RideAccept:
         self._account_repository = passenger_repository
         self._ride_repository = ride_repository
         self._validate = Validates()
+        self.status = RideStatusEnum.ACCEPT.value
 
     def run(self, driver_id: str, ride_id: str):
         if not self._validate.is_uuid(id=driver_id) or not self._validate.is_uuid(id=ride_id):
@@ -28,7 +29,7 @@ class RideAccept:
         ride = self._ride_repository.get_ride_by_id(id=ride_id)
         if not ride:
             raise ErrorRideNotFound()
-        if not ride.validate_next_state(new_status=RideStatusEnum.ACCEPT.value):
+        if not ride.validate_next_state(new_status=self.status):
             raise ErrorStatusNotAllowed()
         if self._ride_repository.get_rides_by_driver(driver_id=driver_id, status_in=[
             RideStatusEnum.ACCEPT.value,
@@ -38,5 +39,4 @@ class RideAccept:
         ], limit=1):
             raise ErrorHaveRideInProgress()
         self._ride_repository.update_driver_ride(ride=ride, id_driver=driver_id)
-        self._ride_repository.update_status_ride(ride=ride, new_status=RideStatusEnum.ACCEPT.value)
-        return self._ride_repository.get_ride_by_id(id=ride_id)
+        return self._ride_repository.update_status_ride(ride=ride, new_status=self.status)
