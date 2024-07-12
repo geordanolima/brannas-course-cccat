@@ -1,7 +1,7 @@
-from ...database import Database
-from ...domain.constants import RideStatusEnum
-from ...domain.repositories import RideRepository
-from ...domain.models import Ride
+from src.database import Database
+from src.domain.constants import RideStatusEnum
+from src.domain.repositories import RideRepository
+from src.domain.models import Ride
 
 
 class RideTestRepository(RideRepository):

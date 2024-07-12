@@ -1,17 +1,18 @@
 from uuid import uuid4
 
-from ..domain.constants import RideStatusEnum
-from ..domain.entities import CoordinateEntitie, RideEntitie
-from ..domain.models.ride import Ride
-from ..domain.repositories import AccountRepository, RideRepository
-from ..presenter.errors import (
+from src.domain.constants import RideStatusEnum
+from src.domain.entities import RideEntitie
+from src.domain.models.ride import Ride
+from src.domain.repositories import AccountRepository, RideRepository
+from src.domain.value_objects import CoordinateObject
+from src.presenter.errors import (
     ErrorAccountNotFound,
     ErrorCoordinatesEquals,
     ErrorHaveRideInProgress,
     ErrorIsInvalidUUID,
     ErrorIsNeedPassenger,
 )
-from ..utils.validates import Validates
+from src.utils.validates import Validates
 
 
 class RideCreate:
@@ -21,7 +22,7 @@ class RideCreate:
         self._validate = Validates()
 
     def run(
-        self, account_id: str, from_coordinate: CoordinateEntitie, to_coordinate: CoordinateEntitie
+        self, account_id: str, from_coordinate: CoordinateObject, to_coordinate: CoordinateObject
     ) -> Ride:
         if not self._validate.is_uuid(id=account_id):
             raise ErrorIsInvalidUUID()

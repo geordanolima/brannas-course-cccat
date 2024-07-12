@@ -1,5 +1,6 @@
 from .base_presenter import BasePresenter
 from .errors import (
+    ErrorCoordinateInvalid,
     ErrorInvalidCpf,
     ErrorInvalidEmail,
     ErrorInvalidName,
@@ -20,6 +21,7 @@ from .errors import (
 
 __all__ = (
     BasePresenter,
+    ErrorCoordinateInvalid,
     ErrorInvalidCpf,
     ErrorInvalidEmail,
     ErrorInvalidName,

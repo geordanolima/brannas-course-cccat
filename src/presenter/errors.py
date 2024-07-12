@@ -28,6 +28,16 @@ class ErrorCoordinatesEquals(BaseException):
     message = {"ERROR": "COORDINATES ARE SAME"}
 
 
+class ErrorCoordinateInvalid(BaseException):
+    message = {
+        "ERROR": "COORDINATE LATITUDE OR LONGITUDE INVALID",
+        "VALIDATION": [
+            "LATITUDE BETWEEN -90 AND 90",
+            "LONGITUDE BETWEEN -180 AND 180",
+        ]
+    }
+
+
 class ErrorHaveRideInProgress(BaseException):
     message = {"ERROR": "HAVE A RIDE IN PROGRESS"}
 
@@ -63,6 +73,13 @@ class ErrorIsInvalidUUID(BaseException):
 class ErrorLoginIncorrect(BaseException):
     message = {"ERROR": "LOGIN INCORRECT!"}
     http_status = status.HTTP_401_UNAUTHORIZED
+
+
+class ErrorPasswordNotAccept(BaseException):
+    message = {
+        "ERROR": "PASSWORD NOT ACCEPT",
+        "MESSAGE": "THE PASSWORD MUST BE BETWEEN 8 AND 16 CHARACTERS AND UPPERCASE AND LOWERCASE LETTERS AND NUMBERS"
+    }
 
 
 class ErrorRideInProgress(BaseException):

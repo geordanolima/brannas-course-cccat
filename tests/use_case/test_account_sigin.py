@@ -1,3 +1,4 @@
+from datetime import datetime
 from uuid import uuid4
 
 import pytest
@@ -10,8 +11,8 @@ from src.presenter.errors import (
     ErrorInvalidName,
     ErrorInvalidPlate,
 )
-from src.repositories.tests import AccountTestRepository
 from src.use_case import Sigin
+from tests.repositories import AccountTestRepository
 
 
 @pytest.fixture
@@ -20,11 +21,12 @@ def create_account() -> Account:
         account_id=str(uuid4()),
         name="test name",
         email="test@test.com",
-        password="12345",
+        password="Senha@segura123",
         cpf="857.306.180-42",
         is_passenger=True,
         is_driver=False,
         car_plate="",
+        created_at=datetime.now()
     )
     return account
 

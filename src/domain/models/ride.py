@@ -18,7 +18,8 @@ class Ride(BaseModel):
     from_longitude: float | None
     to_latitude: float | None
     to_longitude: float | None
-    date: datetime | None
+    created_at: datetime | None
+    updated_at: datetime | None
 
     def _machine_status(self):
         return [

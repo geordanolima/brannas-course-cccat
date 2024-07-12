@@ -1,24 +1,21 @@
 import re
 
-from ...presenter.errors import ErrorInvalidCpf
+from src.presenter import ErrorInvalidCpf
 
 
-class Cpf:
+class CpfObject:
     def __init__(self, cpf) -> None:
         self.CPF_LENGTH = 11
         self.FACTOR_FIRST_DIGIT = 10
         self.FACTOR_SECOND_DIGIT = 11
-        if self._is_invalid_cpf(cpf=cpf):
+        if not self._validate(raw_cpf=cpf):
             raise ErrorInvalidCpf()
-        self.value = self._get_only_numbers(value=cpf)
+        self._value = self._get_only_numbers(value=cpf)
 
-    def get_cpf(self) -> str:
-        return self.value
+    def get_value(self) -> str:
+        return self._value
 
-    def _is_invalid_cpf(self, cpf):
-        return not self._validate_cpf(raw_cpf=cpf)
-
-    def _validate_cpf(self, raw_cpf: str):
+    def _validate(self, raw_cpf: str):
         if not raw_cpf:
             return False
         cpf = self._get_only_numbers(value=raw_cpf)

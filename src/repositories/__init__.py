@@ -1,4 +1,5 @@
 from .account_db_repository import AccountDatabaseRepository
+from .position_db_repository import PositionDatabaseRepository
 from .ride_db_repository import RideDatabaseRepository
 
-__all__ = (AccountDatabaseRepository, RideDatabaseRepository)
+__all__ = (AccountDatabaseRepository, PositionDatabaseRepository, RideDatabaseRepository)

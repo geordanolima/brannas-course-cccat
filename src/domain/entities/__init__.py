@@ -1,6 +1,5 @@
 from .account import AccountEntitie
-from .coordinate import CoordinateEntitie
-from .cpf import Cpf
+from ._base_entitie import BaseEntitie
 from .ride import RideEntitie
 
-__all__ = (AccountEntitie, CoordinateEntitie, Cpf, RideEntitie)
+__all__ = (AccountEntitie, BaseEntitie, RideEntitie)

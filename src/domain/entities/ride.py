@@ -3,8 +3,10 @@ from datetime import datetime
 from src.domain.constants import RideStatusEnum
 from src.domain.models import Ride
 
+from ._base_entitie import BaseEntitie
 
-class RideEntitie:
+
+class RideEntitie(BaseEntitie):
     def __init__(
         self,
         ride_id: str,
@@ -17,9 +19,10 @@ class RideEntitie:
         from_longitude: float = None,
         to_latitude: float = None,
         to_longitude: float = None,
-        date: datetime = datetime.now(),
+        created_at: datetime = datetime.now(),
+        updated_at: datetime = None,
     ):
-        self._ride = Ride(
+        self._value = Ride(
             ride_id=ride_id,
             passenger_id=passenger_id,
             driver_id=driver_id,
@@ -30,11 +33,12 @@ class RideEntitie:
             from_longitude=from_longitude,
             to_latitude=to_latitude,
             to_longitude=to_longitude,
-            date=date,
+            created_at=created_at,
+            updated_at=updated_at,
         )
 
     def object(self, response: bool = False) -> Ride:
-        self._ride.date = self._ride.date.isoformat()
+        _value = super().object()
         if response:
-            self._ride.status = RideStatusEnum.create_from_value(self._ride.status).name
-        return self._ride
+            _value.status = RideStatusEnum.create_from_value(_value.status).name
+        return _value

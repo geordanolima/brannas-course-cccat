@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.database import Database
 from src.domain.entities import AccountEntitie
 from src.domain.models import Account
@@ -12,7 +14,7 @@ class AccountDatabaseRepository(AccountRepository):
 
     def insert_account(self, account: Account):
         self.db.db_query(sql=self._sql_insert_account(account=account))
-        return account
+        return self.get_account_by_id(id=account.account_id)
 
     def get_exists_account(self, email: str) -> bool:
         return bool(self.db.db_get(sql=self._sql_get_exists_account(email=email))[0][0])
@@ -24,12 +26,9 @@ class AccountDatabaseRepository(AccountRepository):
         return None
 
     def get_account_by_id(self, id):
-        try:
-            accounts = self.db.db_get_dict(sql=self._sql_get_account_by_id(id=id))
-            if accounts:
-                return AccountEntitie(**accounts[0]).object(hide_password=True)
-        except Exception:
-            pass
+        accounts = self.db.db_get_dict(sql=self._sql_get_account_by_id(id=id))
+        if accounts:
+            return AccountEntitie(**accounts[0]).object(hide_password=True)
         return None
 
     def get_accounts(self):
@@ -45,10 +44,11 @@ class AccountDatabaseRepository(AccountRepository):
     def update_password(self, account: Account, new_password: str):
         return self.db.db_query(sql=self._sql_update_password(account=account, new_password=new_password))
 
-    def _sql_insert_account(self, account) -> str:
-        sql = """INSERT INTO {table} (account_id, "name", email, password, cpf, car_plate, is_passenger, is_driver)
-            VALUES ('{account_id}', '{name}', '{email}', '{password}',
-            '{cpf}', '{car_plate}', {is_passenger}, {is_driver});
+    def _sql_insert_account(self, account: Account) -> str:
+        sql = """INSERT INTO {table}
+            (account_id, "name", email, password, cpf, car_plate, is_passenger, is_driver, created_at, updated_at)
+        VALUES ('{account_id}', '{name}', '{email}', '{password}',
+            '{cpf}', '{car_plate}', {is_passenger}, {is_driver}, {created_at}, Null);
         """
         return sql.format(
             table=self.table,
@@ -60,6 +60,7 @@ class AccountDatabaseRepository(AccountRepository):
             car_plate=account.car_plate,
             is_passenger=account.is_passenger,
             is_driver=account.is_driver,
+            created_at=datetime.now(),
         )
 
     def _sql_get_exists_account(self, email):
@@ -83,7 +84,8 @@ class AccountDatabaseRepository(AccountRepository):
                 "name"='{new_name}',
                 car_plate='{new_car_plate}',
                 is_passenger={new_is_passenger},
-                is_driver={new_is_driver}
+                is_driver={new_is_driver},
+                updated_at{updated_at}
                 WHERE account_id='{old_id}'::uuid;
         """
         return sql.format(
@@ -93,8 +95,12 @@ class AccountDatabaseRepository(AccountRepository):
             new_is_passenger=new_account.is_passenger,
             new_is_driver=new_account.is_driver,
             old_id=account.account_id,
+            updated_at=datetime.now()
         )
 
     def _sql_update_password(self, account: Account, new_password):
-        sql = """UPDATE {table} SET "password"='{new_password}' where account_id='{account_id}'::uuid;"""
-        return sql.format(table=self.table, new_password=new_password, account_id=account.account_id)
+        sql = """UPDATE {table} SET "password"='{new_password}', updated_at{updated_at}
+            WHEERE account_id='{account_id}'::uuid;"""
+        return sql.format(
+            table=self.table, new_password=new_password, account_id=account.account_id, updated_at=datetime.now()
+        )

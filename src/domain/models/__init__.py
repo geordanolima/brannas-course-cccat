@@ -1,7 +1,17 @@
 from .account import Account
 from .coordinate import Coordinate
-from .login_request import LoginRequest
+from .request_account import LoginRequest
+from .position import Position
 from .ride import Ride
-from .ride_request import RideRequest, RideUpdateStatusRequest
+from .request_ride import RideRequest, RideUpdateStatusRequest, RideAddPositionRequest
 
-__all__ = (Account, Coordinate, LoginRequest, Ride, RideRequest, RideUpdateStatusRequest)
+__all__ = (
+    Account,
+    Coordinate,
+    LoginRequest,
+    Position,
+    Ride,
+    RideRequest,
+    RideUpdateStatusRequest,
+    RideAddPositionRequest,
+)

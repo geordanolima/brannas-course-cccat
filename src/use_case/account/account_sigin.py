@@ -1,8 +1,8 @@
-from ..domain.models import Account
-from ..domain.entities import AccountEntitie
-from ..domain.repositories import AccountRepository
-from ..presenter import ErrorAccountExistent
-from ..utils import Validates
+from src.domain.models import Account
+from src.domain.entities import AccountEntitie
+from src.domain.repositories import AccountRepository
+from src.presenter import ErrorAccountExistent
+from src.utils import Validates
 
 
 class Sigin:

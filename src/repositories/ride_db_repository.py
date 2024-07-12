@@ -1,8 +1,9 @@
-from ..database import Database
-from ..domain.constants import RideStatusEnum
-from ..domain.entities import RideEntitie
-from ..domain.repositories import RideRepository
-from ..domain.models import Ride
+from datetime import datetime
+
+from src.database import Database
+from src.domain.entities import RideEntitie
+from src.domain.repositories import RideRepository
+from src.domain.models import Ride
 
 
 class RideDatabaseRepository(RideRepository):
@@ -47,19 +48,18 @@ class RideDatabaseRepository(RideRepository):
         return {}
 
     def _sql_get_ride_by_id(self, id: str):
-        sql = """SELECT * FROM {table}
-        WHERE ride_id = '{id}'::uuid; """
+        sql = """SELECT * FROM {table} WHERE ride_id = '{id}'::uuid; """
         return sql.format(table=self.table, id=id)
 
     def _sql_insert_ride(self, ride: Ride) -> str:
         sql = """INSERT INTO {table}
             (ride_id, passenger_id, driver_id, status, fare, distance,
-            from_latitude,from_longitude, to_latitude, to_longitude, "date")
+            from_latitude,from_longitude, to_latitude, to_longitude, created_at, updated_at)
             VALUES
             (
                 '{ride_id}'::uuid, '{passenger_id}'::uuid, '{driver_id}'::uuid,
                 {status}, {fare}, {distance}, {from_latitude},
-                {from_longitude}, {to_latitude}, {to_longitude}, '{date}'
+                {from_longitude}, {to_latitude}, {to_longitude}, '{created_at}', Null
             );
         """
         return sql.format(
@@ -74,7 +74,7 @@ class RideDatabaseRepository(RideRepository):
             from_longitude=ride.from_longitude,
             to_latitude=ride.to_latitude,
             to_longitude=ride.to_longitude,
-            date=ride.date,
+            created_at=datetime.now(),
         ).replace("'None'", "Null").replace("None", "Null")
 
     def _sql_get_rides_by_driver(self, driver_id: str, status_in: list[int], limit: int = 50) -> str:
@@ -94,9 +94,11 @@ class RideDatabaseRepository(RideRepository):
         return sql.format(table=self.table, status=tuple(status_not_in), passenger_id=passenger_id, limit=limit)
 
     def _sql_update_status_ride(self, ride: Ride, new_status: int) -> str:
-        sql = """UPDATE {table} SET "status" = {new_status} WHERE "ride_id" = '{ride_id}'::uuid;"""
-        return sql.format(table=self.table, new_status=new_status, ride_id=ride.ride_id)
+        sql = """UPDATE {table} SET "status" = {new_status}, updated_at = {updated_at}
+        WHERE "ride_id" = '{ride_id}'::uuid;"""
+        return sql.format(table=self.table, new_status=new_status, ride_id=ride.ride_id, updated_at=datetime.now())
 
     def _sql_update_driver_ride(self, ride: Ride, id_driver: str) -> str:
-        sql = """UPDATE {table} SET "driver_id" = '{driver_id}'::uuid WHERE "ride_id" = '{ride_id}'::uuid;"""
-        return sql.format(table=self.table, driver_id=id_driver, ride_id=ride.ride_id)
+        sql = """UPDATE {table} SET "driver_id" = '{driver_id}'::uuid, updated_at = {updated_at}
+        WHERE "ride_id" = '{ride_id}'::uuid;"""
+        return sql.format(table=self.table, driver_id=id_driver, ride_id=ride.ride_id, updated_at=datetime.now())

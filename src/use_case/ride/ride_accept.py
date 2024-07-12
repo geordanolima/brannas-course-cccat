@@ -1,6 +1,6 @@
-from ..domain.constants import RideStatusEnum
-from ..domain.repositories import AccountRepository, RideRepository
-from ..presenter import (
+from src.domain.constants import RideStatusEnum
+from src.domain.repositories import AccountRepository, RideRepository
+from src.presenter import (
     ErrorAccountNotFound,
     ErrorHaveRideInProgress,
     ErrorIsInvalidUUID,
@@ -8,7 +8,7 @@ from ..presenter import (
     ErrorRideNotFound,
     ErrorStatusNotAllowed,
 )
-from ..utils.validates import Validates
+from src.utils.validates import Validates
 
 
 class RideAccept:

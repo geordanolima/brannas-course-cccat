@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Response
 
-from ..controller import AccountController, RideController
-from ..domain.models import Account, LoginRequest, RideRequest, RideUpdateStatusRequest
+from src.controller import AccountController, RideController
+from src.domain.models import Account, LoginRequest, RideRequest, RideUpdateStatusRequest, RideAddPositionRequest
 
 app = FastAPI()
 
@@ -53,3 +53,9 @@ def ride_start(ride_start: RideUpdateStatusRequest):
 def ride_by_id(ride_id: str):
     controller = RideController()
     return controller.get_ride(ride_id=ride_id)
+
+
+@app.post("/position", tags=["position"], response_class=Response)
+def create_new_position(position: RideAddPositionRequest):
+    controller = RideController()
+    return controller.update_position(ride_id=position.ride_id, coordinate=position.coordinate)

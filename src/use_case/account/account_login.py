@@ -1,12 +1,12 @@
-from ..domain.repositories import AccountRepository
-from ..presenter import ErrorLoginIncorrect
-from ..utils import Password
+from src.domain.repositories import AccountRepository
+from src.presenter import ErrorLoginIncorrect
+from src.domain.value_objects import PasswordObject
 
 
 class Login:
     def __init__(self, repository: AccountRepository) -> None:
         self.repository = repository
-        self._password = Password()
+        self._password = PasswordObject()
 
     def run(self, email: str, password: str):
         account = self.repository.get_account_by_email(email=email, hide_password=False)

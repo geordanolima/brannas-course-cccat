@@ -1,13 +1,15 @@
+from datetime import datetime
 from uuid import uuid4
 
 import pytest
 
 from src.domain.constants import RideStatusEnum
-from src.domain.entities import AccountEntitie, CoordinateEntitie, RideEntitie
+from src.domain.entities import AccountEntitie, RideEntitie
 from src.domain.models import Account, Ride
+from src.domain.value_objects import CoordinateObject
 from src.presenter.errors import ErrorHaveRideInProgress, ErrorIsNeedPassenger
-from src.repositories.tests import AccountTestRepository, RideTestRepository
 from src.use_case import RideCreate
+from tests.repositories import AccountTestRepository, RideTestRepository
 
 account_repository = AccountTestRepository(db=None)
 ride_repository = RideTestRepository(db=None)
@@ -19,11 +21,12 @@ def create_account() -> Account:
         account_id=str(uuid4()),
         name="test name",
         email="test@test.com",
-        password="12345",
+        password="Senha@segura123",
         cpf="857.306.180-42",
         is_passenger=True,
         is_driver=False,
         car_plate="",
+        created_at=datetime.now()
     ).object()
 
 
@@ -39,7 +42,7 @@ def create_ride(account_passenger, account_driver) -> Ride:
 
 @pytest.fixture
 def account_not_passenger(create_account) -> Account:
-    account = AccountEntitie(**create_account.dict()).object()
+    account = Account(**create_account.dict())
     account.account_id = str(uuid4())
     account.is_passenger = False
     account_repository.insert_account(account=account)
@@ -48,23 +51,23 @@ def account_not_passenger(create_account) -> Account:
 
 @pytest.fixture
 def account_passenger(create_account) -> Account:
-    account_passenger = AccountEntitie(**create_account.dict())
+    account_passenger = Account(**create_account.dict())
     account_passenger.account_id = str(uuid4())
     account_passenger.is_driver = False
     account_passenger.is_passenger = True
-    account_repository.insert_account(account=account_passenger.object())
-    return account_passenger.object()
+    account_repository.insert_account(account=account_passenger)
+    return account_passenger
 
 
 @pytest.fixture
 def account_driver(create_account) -> Account:
-    account_driver = AccountEntitie(**create_account.dict())
+    account_driver = Account(**create_account.dict())
     account_driver.account_id = str(uuid4())
     account_driver.is_passenger = False
     account_driver.is_driver = True
     account_driver.car_plate = "XXX-1234"
-    account_repository.insert_account(account=account_driver.object())
-    return account_driver.object()
+    account_repository.insert_account(account=account_driver)
+    return account_driver
 
 
 @pytest.fixture
@@ -76,13 +79,13 @@ def ride_in_progress(create_ride, account_driver) -> Ride:
 
 
 @pytest.fixture
-def from_coord() -> CoordinateEntitie:
-    return CoordinateEntitie(latitude=-23.509698, longitude=-46.6587042).object()
+def from_coord() -> CoordinateObject:
+    return CoordinateObject(latitude=-23.509698, longitude=-46.6587042).object()
 
 
 @pytest.fixture
-def to_coord() -> CoordinateEntitie:
-    return CoordinateEntitie(latitude=-23.5200384, longitude=-46.6682877).object()
+def to_coord() -> CoordinateObject:
+    return CoordinateObject(latitude=-23.5200384, longitude=-46.6682877).object()
 
 
 def test_ride_is_not_passenger(account_not_passenger, from_coord, to_coord):

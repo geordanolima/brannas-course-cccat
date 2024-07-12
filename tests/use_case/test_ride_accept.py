@@ -13,8 +13,8 @@ from src.presenter import (
     ErrorHaveRideInProgress,
     ErrorStatusNotAllowed,
 )
-from src.repositories.tests import AccountTestRepository, RideTestRepository
 from src.use_case import RideAccept
+from tests.repositories import AccountTestRepository, RideTestRepository
 
 
 @pytest.fixture
@@ -33,7 +33,7 @@ def create_account() -> Account:
         account_id=str(uuid4()),
         name="test name",
         email="test@test.com",
-        password="12345",
+        password="Senha@segura123",
         cpf="857.306.180-42",
         is_passenger=True,
         is_driver=False,

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from src.domain.models.coordinate import Coordinate
+from src.domain.models import Coordinate
 
 
 class RideRequest(BaseModel):
@@ -12,3 +12,8 @@ class RideRequest(BaseModel):
 class RideUpdateStatusRequest(BaseModel):
     driver_id: str
     ride_id: str
+
+
+class RideAddPositionRequest(BaseModel):
+    ride_id: str
+    coordinate: Coordinate

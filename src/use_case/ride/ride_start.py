@@ -1,12 +1,12 @@
-from ..domain.constants import RideStatusEnum
-from ..domain.repositories import RideRepository
-from ..presenter import (
+from src.domain.constants import RideStatusEnum
+from src.domain.repositories import RideRepository
+from src.presenter import (
     ErrorIsInvalidUUID,
     ErrorRideNotFound,
     ErrorRideOfOtherDriver,
     ErrorStatusNotAllowed,
 )
-from ..utils.validates import Validates
+from src.utils.validates import Validates
 
 
 class RideStart:
