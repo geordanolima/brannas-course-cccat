@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from src.database import Database
-from src.domain.value_objects import PositionObject
+from src.domain.value_objects import PositionEntitie
 from src.domain.models.position import Position
 from src.domain.repositories import PositionRepository
 
@@ -19,14 +19,14 @@ class PositionDatabaseRepository(PositionRepository):
     def get_position_by_id(self, position_id: str) -> Position:
         position = self.db.db_get_dict(sql=self._sql_get_position_by_id(position_id=position_id))
         if position:
-            return PositionObject(**position[0]).object()
+            return PositionEntitie(**position[0]).object()
         return None
 
     def get_position_by_ride(self, ride_id: str) -> list[Position]:
         result = []
         positions = self.db.db_get_dict(sql=self._sql_get_position_by_ride(ride_id=ride_id))
         for position in positions:
-            result.append(PositionObject(**position[0]).object())
+            result.append(PositionEntitie(**position[0]).object())
         return result
 
     def _sql_insert_position(position: Position) -> str:

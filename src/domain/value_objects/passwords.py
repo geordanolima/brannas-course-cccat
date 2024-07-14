@@ -4,15 +4,14 @@ import bcrypt
 
 from src.presenter.errors import ErrorPasswordNotAccept
 
+from ._base_value_object import BaseValueObject
 
-class PasswordObject:
+
+class PasswordObject(BaseValueObject):
     def __init__(self, value: str = "") -> None:
         if value and not self._validate(value):
             raise ErrorPasswordNotAccept()
         self._value = self._cryptography_password(value)
-
-    def get_value(self) -> str:
-        return self._value
 
     def _validate(self, value: str) -> bool:
         return re.match(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$', value)

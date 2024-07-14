@@ -1,19 +1,14 @@
 from datetime import datetime
 
+from ._base_entitie import BaseEntitie
 from src.domain.models import Coordinate, Position
 
-
-class PositionObject:
+class PositionEntitie(BaseEntitie):
     def __init__(self, position_id: str, ride_id: str, coordinate: Coordinate, created_at: datetime = datetime.now()):
-        self._position = Position(
+        self._value = Position(
             position_id=position_id,
             ride_id=ride_id,
             latitude=coordinate.latitude,
             longitude=coordinate.longitude,
             created_at=created_at
         )
-
-    def object(self) -> Position:
-        if type(self._position.created_at) is datetime:
-            self._position.created_at = self._position.created_at.isoformat()
-        return self._position

@@ -2,8 +2,10 @@ import re
 
 from src.presenter import ErrorInvalidCpf
 
+from ._base_value_object import BaseValueObject
 
-class CpfObject:
+
+class CpfObject(BaseValueObject):
     def __init__(self, cpf) -> None:
         self.CPF_LENGTH = 11
         self.FACTOR_FIRST_DIGIT = 10
@@ -11,9 +13,6 @@ class CpfObject:
         if not self._validate(raw_cpf=cpf):
             raise ErrorInvalidCpf()
         self._value = self._get_only_numbers(value=cpf)
-
-    def get_value(self) -> str:
-        return self._value
 
     def _validate(self, raw_cpf: str):
         if not raw_cpf:

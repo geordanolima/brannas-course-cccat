@@ -80,12 +80,12 @@ def ride_in_progress(create_ride, account_driver) -> Ride:
 
 @pytest.fixture
 def from_coord() -> CoordinateObject:
-    return CoordinateObject(latitude=-23.509698, longitude=-46.6587042).object()
+    return CoordinateObject(latitude=-23.509698, longitude=-46.6587042).get_value()
 
 
 @pytest.fixture
 def to_coord() -> CoordinateObject:
-    return CoordinateObject(latitude=-23.5200384, longitude=-46.6682877).object()
+    return CoordinateObject(latitude=-23.5200384, longitude=-46.6682877).get_value()
 
 
 def test_ride_is_not_passenger(account_not_passenger, from_coord, to_coord):

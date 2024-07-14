@@ -4,7 +4,7 @@ from src.presenter import ErrorIsInvalidUUID, ErrorRideNotFound, ErrorStatusNotA
 from src.domain.constants import RideStatusEnum
 from src.domain.models import Position
 from src.domain.repositories import PositionRepository, RideRepository
-from src.domain.value_objects import CoordinateObject, PositionObject
+from src.domain.value_objects import CoordinateObject, PositionEntitie
 from src.utils import Validates
 
 
@@ -22,5 +22,5 @@ class RideUpdatePosition:
             raise ErrorRideNotFound()
         if ride.status != RideStatusEnum.IN_PROGRESS.value:
             raise ErrorStatusNotAllowed()
-        position = PositionObject(position_id=str(uuid4()), ride_id=ride_id, coordinate=coordinate).object()
+        position = PositionEntitie(position_id=str(uuid4()), ride_id=ride_id, coordinate=coordinate).object()
         return self._position_repository.insert_position(position=position)
