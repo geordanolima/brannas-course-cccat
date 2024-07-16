@@ -1,6 +1,3 @@
-from datetime import datetime
-from uuid import uuid4
-
 import pytest
 
 from src.domain.models import Account
@@ -12,23 +9,6 @@ from src.presenter.errors import (
     ErrorInvalidPlate,
 )
 from src.use_case import Sigin
-from tests.repositories import AccountTestRepository
-
-
-@pytest.fixture
-def create_account() -> Account:
-    account = Account(
-        account_id=str(uuid4()),
-        name="test name",
-        email="test@test.com",
-        password="Senha@segura123",
-        cpf="857.306.180-42",
-        is_passenger=True,
-        is_driver=False,
-        car_plate="",
-        created_at=datetime.now()
-    )
-    return account
 
 
 @pytest.fixture
@@ -69,11 +49,6 @@ def populate_account(repository, create_account: Account):
     account.email = "testexistent@test.com"
     repository.insert_account(account=account)
     return account
-
-
-@pytest.fixture
-def repository() -> AccountTestRepository:
-    return AccountTestRepository(db=None)
 
 
 def test_account_existent(populate_account, repository):

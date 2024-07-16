@@ -3,8 +3,7 @@ from uuid import uuid4
 import pytest
 
 from src.domain.constants import RideStatusEnum
-from src.domain.entities import AccountEntitie, RideEntitie
-from src.domain.models import Account, Ride
+from src.domain.models import Ride
 from src.presenter import (
     ErrorIsInvalidUUID,
     ErrorRideOfOtherDriver,
@@ -12,70 +11,6 @@ from src.presenter import (
     ErrorStatusNotAllowed,
 )
 from src.use_case import RideStart
-from tests.repositories import AccountTestRepository, RideTestRepository
-
-
-@pytest.fixture
-def account_repository() -> AccountTestRepository:
-    return AccountTestRepository(db=None)
-
-
-@pytest.fixture
-def ride_repository() -> RideTestRepository:
-    return RideTestRepository(db=None)
-
-
-@pytest.fixture
-def create_account() -> Account:
-    return AccountEntitie(
-        account_id=str(uuid4()),
-        name="test name",
-        email="test@test.com",
-        password="Senha@segura123",
-        cpf="857.306.180-42",
-        is_passenger=True,
-        is_driver=False,
-        car_plate="",
-    ).object()
-
-
-@pytest.fixture
-def account_driver(create_account, account_repository) -> Account:
-    account_driver = Account(**create_account.dict())
-    account_driver.account_id = str(uuid4())
-    account_driver.is_passenger = False
-    account_driver.is_driver = True
-    account_driver.car_plate = "XXX-1234"
-    account_repository.insert_account(account=account_driver)
-    return account_driver
-
-
-@pytest.fixture
-def account_passenger(create_account, account_repository) -> Account:
-    account_passenger = Account(**create_account.dict())
-    account_passenger.account_id = str(uuid4())
-    account_passenger.is_driver = False
-    account_passenger.is_passenger = True
-    account_repository.insert_account(account=account_passenger)
-    return account_passenger
-
-
-@pytest.fixture
-def create_ride(account_passenger, account_driver) -> Ride:
-    return RideEntitie(
-        ride_id=str(uuid4()),
-        passenger_id=account_passenger.account_id,
-        driver_id=account_driver.account_id,
-        status=RideStatusEnum.CREATED.value,
-    ).object()
-
-
-@pytest.fixture
-def ride_in_progress(create_ride, ride_repository):
-    ride_in_progress = Ride(**create_ride.dict())
-    ride_in_progress.ride_id = str(uuid4())
-    ride_in_progress.status = RideStatusEnum.IN_PROGRESS.value
-    return ride_repository.insert_ride(ride=ride_in_progress)
 
 
 @pytest.fixture

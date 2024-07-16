@@ -1,23 +1,21 @@
 from src.domain.constants import RideStatusEnum
 from src.domain.repositories import RideRepository
 from src.presenter import (
-    ErrorIsInvalidUUID,
     ErrorRideNotFound,
     ErrorRideOfOtherDriver,
     ErrorStatusNotAllowed,
 )
-from src.utils.validates import Validates
+from src.use_case import BaseUseCase
 
 
-class RideStart:
+class RideStart(BaseUseCase):
     def __init__(self, ride_repository: RideRepository) -> None:
+        super().__init__()
         self._ride_repository = ride_repository
-        self._validate = Validates()
         self.staus = RideStatusEnum.IN_PROGRESS.value
 
     def run(self, driver_id: str, ride_id: str):
-        if not self._validate.is_uuid(id=driver_id) or not self._validate.is_uuid(id=ride_id):
-            raise ErrorIsInvalidUUID()
+        self._validate_list_id(list_id=[driver_id, ride_id])
         ride = self._ride_repository.get_ride_by_id(id=ride_id)
         if not ride:
             raise ErrorRideNotFound()

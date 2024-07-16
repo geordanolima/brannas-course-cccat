@@ -3,6 +3,7 @@ import pytest
 from src.domain.value_objects import EmailObject
 from src.presenter import ErrorInvalidEmail
 
+
 @pytest.mark.parametrize("email_input", ["email.com", "email", "email@@.com", "12345@email.com", "email@test"])
 def test_email_invalid(email_input):
     with pytest.raises(ErrorInvalidEmail):

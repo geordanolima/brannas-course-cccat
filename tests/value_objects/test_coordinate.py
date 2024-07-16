@@ -26,4 +26,3 @@ def test_coordinate_valid(latitude_input, longitude_input):
     coordinate = CoordinateObject(latitude=latitude_input, longitude=longitude_input)
     assert coordinate.get_value().latitude == latitude_input
     assert coordinate.get_value().longitude == longitude_input
-        

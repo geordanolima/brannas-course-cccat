@@ -3,24 +3,22 @@ from src.domain.repositories import AccountRepository, RideRepository
 from src.presenter import (
     ErrorAccountNotFound,
     ErrorHaveRideInProgress,
-    ErrorIsInvalidUUID,
     ErrorIsNeedDriver,
     ErrorRideNotFound,
     ErrorStatusNotAllowed,
 )
-from src.utils.validates import Validates
+from src.use_case import BaseUseCase
 
 
-class RideAccept:
+class RideAccept(BaseUseCase):
     def __init__(self, ride_repository: RideRepository, passenger_repository: AccountRepository) -> None:
+        super().__init__()
         self._account_repository = passenger_repository
         self._ride_repository = ride_repository
-        self._validate = Validates()
         self.status = RideStatusEnum.ACCEPT.value
 
     def run(self, driver_id: str, ride_id: str):
-        if not self._validate.is_uuid(id=driver_id) or not self._validate.is_uuid(id=ride_id):
-            raise ErrorIsInvalidUUID()
+        self._validate_list_id(list_id=[driver_id, ride_id])
         account = self._account_repository.get_account_by_id(id=driver_id)
         if not account:
             raise ErrorAccountNotFound()
@@ -38,5 +36,4 @@ class RideAccept:
             RideStatusEnum.PENDING_RATE.value
         ], limit=1):
             raise ErrorHaveRideInProgress()
-        self._ride_repository.update_driver_ride(ride=ride, id_driver=driver_id)
-        return self._ride_repository.update_status_ride(ride=ride, new_status=self.status)
+        return self._ride_repository.update_driver_ride(ride=ride, id_driver=driver_id, new_status=self.status)

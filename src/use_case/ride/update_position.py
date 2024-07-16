@@ -1,22 +1,22 @@
 from uuid import uuid4
-from src.presenter import ErrorIsInvalidUUID, ErrorRideNotFound, ErrorStatusNotAllowed
+from src.presenter import ErrorRideNotFound, ErrorStatusNotAllowed
 
 from src.domain.constants import RideStatusEnum
+from src.domain.entities import PositionEntitie
 from src.domain.models import Position
 from src.domain.repositories import PositionRepository, RideRepository
-from src.domain.value_objects import CoordinateObject, PositionEntitie
-from src.utils import Validates
+from src.domain.value_objects import CoordinateObject
+from src.use_case import BaseUseCase
 
 
-class RideUpdatePosition:
+class RideUpdatePosition(BaseUseCase):
     def __init__(self, ride_repository: RideRepository, position_repository: PositionRepository) -> None:
+        super().__init__()
         self._ride_repository = ride_repository
         self._position_repository = position_repository
-        self._validate = Validates()
 
     def run(self, ride_id: str, coordinate: CoordinateObject) -> Position:
-        if not self._validate.is_uuid(id=ride_id):
-            raise ErrorIsInvalidUUID()
+        self._validate_id(id=ride_id)
         ride = self._ride_repository.get_ride_by_id(id=ride_id)
         if not ride:
             raise ErrorRideNotFound()

@@ -1,10 +1,28 @@
+from .base_use_case import BaseGetUseCase, BaseUseCase
 from .account.account_login import Login
 from .account.account_get import AccountGet
 from .account.account_sigin import Sigin
-from .ride.ride_accept import RideAccept
-from .ride.ride_get import RideGet
-from .ride.ride_create import RideCreate
-from .ride.ride_start import RideStart
-from .ride.ride_update_position import RideUpdatePosition
+from .ride.accept import RideAccept
+from .ride.get import RideGet
+from .ride.create import RideCreate
+from .ride.finish import RideFinish
+from .ride.payment import RidePayment
+from .ride.rate import RideRate
+from .ride.start import RideStart
+from .ride.update_position import RideUpdatePosition
 
-__all__ = (AccountGet, Login, Sigin, RideAccept, RideGet, RideCreate, RideStart, RideUpdatePosition,)
+__all__ = (
+    AccountGet,
+    BaseGetUseCase,
+    BaseUseCase,
+    Login,
+    Sigin,
+    RideAccept,
+    RideCreate,
+    RideFinish,
+    RideGet,
+    RidePayment,
+    RideRate,
+    RideStart,
+    RideUpdatePosition,
+)

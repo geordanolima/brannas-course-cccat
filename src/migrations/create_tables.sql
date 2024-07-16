@@ -11,6 +11,7 @@ create table cccat.account (
 	car_plate text null,
 	is_passenger boolean not null default false,
 	is_driver boolean not null default false,
+	rate int -1,
 	created_at timestamp,
 	updated_at timestamp
 );
@@ -26,6 +27,7 @@ create table cccat.ride (
 	from_longitudeitude numeric,
 	to_latitudeitude numeric,
 	to_longitude numeric,
+	rate int -1,
 	created_at timestamp,
 	updated_at timestamp
 );

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from src.database import Database
 from src.domain.constants import RideStatusEnum
 from src.domain.repositories import RideRepository
@@ -33,6 +35,7 @@ class RideTestRepository(RideRepository):
         for item in self.rides:
             if item.ride_id == ride.ride_id:
                 item.status = new_status
+                item.updated_at = datetime.now()
         return self.get_ride_by_id(id=ride.ride_id, response=True)
 
     def get_ride_by_id(self, id: str, response: bool = False):
@@ -42,8 +45,27 @@ class RideTestRepository(RideRepository):
                     item.status = RideStatusEnum.create_from_value(item.status).name
                 return item
 
-    def update_driver_ride(self, ride: Ride, id_driver: int):
+    def update_driver_ride(self, ride: Ride, id_driver: int, new_status: int):
         for item in self.rides:
             if item.ride_id == ride.ride_id:
                 item.driver_id = id_driver
+                item.status = new_status
+                item.updated_at = datetime.now()
+                return item
+
+    def update_fare_ride(self, ride: Ride, fare: float, distance: float, new_status) -> Ride:
+        for item in self.rides:
+            if item.ride_id == ride.ride_id:
+                item.fare = fare
+                item.distance = distance
+                item.status = new_status
+                item.updated_at = datetime.now()
+                return item
+
+    def update_rate_repository(self, ride: Ride, rate: int, new_status: int) -> Ride:
+        for item in self.rides:
+            if item.ride_id == ride.ride_id:
+                item.rate = rate
+                item.status = new_status
+                item.updated_at = datetime.now()
                 return item

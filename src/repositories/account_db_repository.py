@@ -28,7 +28,9 @@ class AccountDatabaseRepository(AccountRepository):
     def get_account_by_id(self, id):
         accounts = self.db.db_get_dict(sql=self._sql_get_account_by_id(id=id))
         if accounts:
-            return AccountEntitie(**accounts[0]).object(hide_password=True)
+            account = accounts[0]
+            account["password"] = "Password#123"            
+            return AccountEntitie(**account).object(hide_password=True)
         return None
 
     def get_accounts(self):
@@ -48,7 +50,7 @@ class AccountDatabaseRepository(AccountRepository):
         sql = """INSERT INTO {table}
             (account_id, "name", email, password, cpf, car_plate, is_passenger, is_driver, created_at, updated_at)
         VALUES ('{account_id}', '{name}', '{email}', '{password}',
-            '{cpf}', '{car_plate}', {is_passenger}, {is_driver}, {created_at}, Null);
+            '{cpf}', '{car_plate}', {is_passenger}, {is_driver}, '{created_at}', Null);
         """
         return sql.format(
             table=self.table,
@@ -85,7 +87,7 @@ class AccountDatabaseRepository(AccountRepository):
                 car_plate='{new_car_plate}',
                 is_passenger={new_is_passenger},
                 is_driver={new_is_driver},
-                updated_at{updated_at}
+                updated_at='{updated_at}'
                 WHERE account_id='{old_id}'::uuid;
         """
         return sql.format(
@@ -99,7 +101,7 @@ class AccountDatabaseRepository(AccountRepository):
         )
 
     def _sql_update_password(self, account: Account, new_password):
-        sql = """UPDATE {table} SET "password"='{new_password}', updated_at{updated_at}
+        sql = """UPDATE {table} SET "password"='{new_password}', updated_at='{updated_at}'
             WHEERE account_id='{account_id}'::uuid;"""
         return sql.format(
             table=self.table, new_password=new_password, account_id=account.account_id, updated_at=datetime.now()

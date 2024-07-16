@@ -1,4 +1,3 @@
-from datetime import datetime
 from uuid import uuid4
 
 from pydantic import BaseModel
@@ -12,14 +11,15 @@ class Ride(BaseModel):
     passenger_id: str
     driver_id: str | None
     status: int = RideStatusEnum.CREATED.value
+    rate: int
     fare: float | None
     distance: float | None
     from_latitude: float | None
     from_longitude: float | None
     to_latitude: float | None
     to_longitude: float | None
-    created_at: datetime | None
-    updated_at: datetime | None
+    created_at: str | None
+    updated_at: str | None
 
     def _machine_status(self):
         return [
@@ -54,6 +54,6 @@ class Ride(BaseModel):
             {"current_status": RideStatusEnum.ERROR, "permitted_next_status": []},
         ]
 
-    def validate_next_state(self, new_status: RideStatusEnum):
+    def validate_next_state(self, new_status: int):
         machine = MachineStatus(machine_status=self._machine_status())
         return machine.validate_next_status(current_status=self.status, new_status=new_status)

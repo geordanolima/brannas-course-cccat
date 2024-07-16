@@ -4,13 +4,7 @@ import pytest
 
 from src.domain.constants import RideStatusEnum
 from src.domain.entities import AccountEntitie, RideEntitie
-from src.domain.models import Account, Coordinate, Ride
-from src.presenter import (
-    ErrorIsInvalidUUID,
-    ErrorRideNotFound,
-    ErrorStatusNotAllowed,
-)
-from src.use_case import RideUpdatePosition
+from src.domain.models import Account, Ride
 from tests.repositories import AccountTestRepository, RideTestRepository, PositionTestRepository
 
 
@@ -37,6 +31,7 @@ def create_account() -> Account:
         email="test@test.com",
         password="Senha@segura123",
         cpf="857.306.180-42",
+        rate=-1,
         is_passenger=True,
         is_driver=False,
         car_plate="",
@@ -75,14 +70,6 @@ def create_ride(account_passenger, account_driver) -> Ride:
 
 
 @pytest.fixture
-def ride_in_progress(create_ride, ride_repository):
-    ride_in_progress = Ride(**create_ride.dict())
-    ride_in_progress.ride_id = str(uuid4())
-    ride_in_progress.status = RideStatusEnum.IN_PROGRESS.value
-    return ride_repository.insert_ride(ride=ride_in_progress)
-
-
-@pytest.fixture
 def ride_created(create_ride, ride_repository):
     ride_created = Ride(**create_ride.dict())
     ride_created.ride_id = str(uuid4())
@@ -90,27 +77,32 @@ def ride_created(create_ride, ride_repository):
     return ride_repository.insert_ride(ride=ride_created)
 
 
-def test_update_positon_uuid_invalid(ride_repository, position_repository):
-    with pytest.raises(ErrorIsInvalidUUID):
-        use_case = RideUpdatePosition(ride_repository=ride_repository, position_repository=position_repository)
-        use_case.run(ride_id="invalid_uuid", coordinate=Coordinate(latitude=10, longitude=11))
+@pytest.fixture
+def ride_in_progress(ride_repository, create_ride, account_driver) -> Ride:
+    create_ride.status = RideStatusEnum.IN_PROGRESS.value
+    create_ride.driver_id = account_driver.account_id
+    ride_repository.insert_ride(create_ride)
+    return create_ride
+
+@pytest.fixture
+def ride_pending_pay(ride_repository, create_ride, account_driver) -> Ride:
+    create_ride.status = RideStatusEnum.PENDING_PAY.value
+    create_ride.driver_id = account_driver.account_id
+    ride_repository.insert_ride(create_ride)
+    return create_ride
+
+@pytest.fixture
+def ride_pending_rate(ride_repository, create_ride, account_driver) -> Ride:
+    create_ride.status = RideStatusEnum.PENDING_RATE.value
+    create_ride.driver_id = account_driver.account_id
+    ride_repository.insert_ride(create_ride)
+    return create_ride
 
 
-def test_update_position_ride_not_found(ride_repository, position_repository):
-    with pytest.raises(ErrorRideNotFound):
-        use_case = RideUpdatePosition(ride_repository=ride_repository, position_repository=position_repository)
-        use_case.run(ride_id=str(uuid4()), coordinate=Coordinate(latitude=10, longitude=11))
-
-
-def test_update_position_status_not_allwed(ride_repository, position_repository, ride_created):
-    with pytest.raises(ErrorStatusNotAllowed):
-        use_case = RideUpdatePosition(ride_repository=ride_repository, position_repository=position_repository)
-        use_case.run(ride_id=ride_created.ride_id, coordinate=Coordinate(latitude=10, longitude=11))
-
-
-def test_success_update_position(ride_repository, position_repository, ride_in_progress):
-    use_case = RideUpdatePosition(ride_repository=ride_repository, position_repository=position_repository)
-    position = use_case.run(ride_id=ride_in_progress.ride_id, coordinate=Coordinate(latitude=10, longitude=11))
-    assert position.position_id is not None
-    assert position.latitude == 10
-    assert position.longitude == 11
+@pytest.fixture
+def ride_canceled(create_ride, ride_repository):
+    ride_status_not_allowed = Ride(**create_ride.dict())
+    ride_status_not_allowed.ride_id = str(uuid4())
+    ride_status_not_allowed.driver_id = ""
+    ride_status_not_allowed.status = RideStatusEnum.CANCELED.value
+    return ride_repository.insert_ride(ride=ride_status_not_allowed)

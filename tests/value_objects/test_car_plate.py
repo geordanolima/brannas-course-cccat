@@ -16,7 +16,7 @@ def test_invalid_car_plate_is_driver_false():
     assert valid_plate == ''
 
 
-@pytest.mark.parametrize("plate_input", ["ABC-1234", "ABC-1D23", "abc-1234", "abc-1d23", "abc1234",  "abc1d23"])
+@pytest.mark.parametrize("plate_input", ["ABC-1234", "ABC-1D23", "abc-1234", "abc-1d23", "abc1234", "abc1d23"])
 def test_success_car_plate(plate_input):
     valid_plate = CarPlateObject(True, plate_input).get_value()
     assert valid_plate == plate_input

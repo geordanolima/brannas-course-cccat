@@ -9,23 +9,21 @@ from src.presenter.errors import (
     ErrorAccountNotFound,
     ErrorCoordinatesEquals,
     ErrorHaveRideInProgress,
-    ErrorIsInvalidUUID,
     ErrorIsNeedPassenger,
 )
-from src.utils.validates import Validates
+from src.use_case import BaseUseCase
 
 
-class RideCreate:
+class RideCreate(BaseUseCase):
     def __init__(self, ride_repository: RideRepository, passenger_repository: AccountRepository) -> None:
+        super().__init__()
         self._account_repository = passenger_repository
         self._ride_repository = ride_repository
-        self._validate = Validates()
 
     def run(
         self, account_id: str, from_coordinate: CoordinateObject, to_coordinate: CoordinateObject
     ) -> Ride:
-        if not self._validate.is_uuid(id=account_id):
-            raise ErrorIsInvalidUUID()
+        self._validate_id(id=account_id)
         account = self._account_repository.get_account_by_id(id=account_id)
         if not account:
             raise ErrorAccountNotFound()

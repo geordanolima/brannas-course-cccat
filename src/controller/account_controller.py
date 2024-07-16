@@ -14,7 +14,7 @@ class AccountController:
     def create_account(self, account: Account):
         use_case = Sigin(repository=self._repository)
         try:
-            result = use_case.sigin(account=account)
+            result = use_case.run(account=account)
             return self._presenter.response(result.dict())
         except BaseException as error:
             return self._presenter.response_error(error)
@@ -23,6 +23,6 @@ class AccountController:
         use_case = Login(repository=self._repository)
         return self._presenter.exception_handler(method=use_case.login, params={login.email, login.password})
 
-    def get_account_by_id(self, account_id: str):
+    def get_account_by_id(self, id: str):
         use_case = AccountGet(repository=self._repository)
-        return self._presenter.exception_handler(method=use_case.get_account_by_id, params={account_id})
+        return self._presenter.exception_handler(method=use_case.get_id, params={id})

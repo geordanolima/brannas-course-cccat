@@ -8,4 +8,4 @@ class Position(BaseModel):
     ride_id: str
     latitude: float
     longitude: float
-    created_at: datetime
+    created_at: str

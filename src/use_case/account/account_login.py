@@ -1,9 +1,10 @@
 from src.domain.repositories import AccountRepository
 from src.presenter import ErrorLoginIncorrect
 from src.domain.value_objects import PasswordObject
+from src.use_case import BaseUseCase
 
 
-class Login:
+class Login(BaseUseCase):
     def __init__(self, repository: AccountRepository) -> None:
         self.repository = repository
         self._password = PasswordObject()

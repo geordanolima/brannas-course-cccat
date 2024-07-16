@@ -4,6 +4,7 @@ from src.presenter import ErrorInvalidEmail
 
 from ._base_value_object import BaseValueObject
 
+
 class EmailObject(BaseValueObject):
     def __init__(self, value: str) -> None:
         if not self._validate(value=value):

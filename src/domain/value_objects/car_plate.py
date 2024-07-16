@@ -5,7 +5,6 @@ from src.presenter import ErrorInvalidPlate
 from ._base_value_object import BaseValueObject
 
 
-
 class CarPlateObject(BaseValueObject):
     def __init__(self, is_driver: bool, value: str) -> None:
         self._value = ""

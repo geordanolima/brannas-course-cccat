@@ -17,9 +17,13 @@ class AccountEntitie(BaseEntitie):
         car_plate: str,
         is_passenger: bool = False,
         is_driver: bool = False,
-        created_at: datetime = datetime.now(),
-        updated_at: datetime = None
+        rate: int = -1,
+        created_at: str = datetime.now().isoformat(),
+        updated_at: str = None
     ):
+        if type(updated_at) is datetime:
+            updated_at = updated_at.isoformat()
+        
         self._value = Account(
             account_id=account_id,
             name=NameObject(name).get_value(),
@@ -27,8 +31,16 @@ class AccountEntitie(BaseEntitie):
             password=PasswordObject(password).get_value(),
             cpf=CpfObject(cpf).get_value(),
             is_passenger=is_passenger,
+            rate=rate,
             is_driver=is_driver,
             car_plate=CarPlateObject(is_driver=is_driver, value=car_plate).get_value(),
             created_at=created_at,
             updated_at=updated_at,
         )
+
+    def object(self, hide_password: bool = False):
+        result: Account = super().object()
+        if hide_password:
+            result.password = "*********"
+        return result
+    

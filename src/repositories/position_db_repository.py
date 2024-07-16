@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from src.database import Database
-from src.domain.value_objects import PositionEntitie
+from src.domain.entities import PositionEntitie
 from src.domain.models.position import Position
 from src.domain.repositories import PositionRepository
 
@@ -31,7 +31,7 @@ class PositionDatabaseRepository(PositionRepository):
 
     def _sql_insert_position(position: Position) -> str:
         sql = """INSERT INTO {table} (position_id, ride_id, latitude, longitude, created_at)
-        VALUES({position_id}::uuid, {ride_id}::uuid, {latitude}, {longitude}, {created_at});"""
+        VALUES({position_id}::uuid, {ride_id}::uuid, {latitude}, {longitude}, '{created_at}');"""
         return sql.format(
             position_id=position.position_id,
             ride_id=position.ride_id,

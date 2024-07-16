@@ -56,6 +56,14 @@ class ErrorInvalidName(BaseException):
 
 class ErrorInvalidPlate(BaseException):
     message = {"ERROR": "INVALID PLATE", "CODE": -5}
+    
+
+class ErrorInvalidRate(BaseException):
+    message = {"ERROR": "INVALID RATE", "CODE": -6}
+
+
+class ErrorMissingInformation(BaseException):
+    message = {"ERROR": "MISSING INFORMATION"}
 
 
 class ErrorIsNeedDriver(BaseException):

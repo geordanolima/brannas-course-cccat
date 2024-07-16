@@ -2,12 +2,11 @@ from src.domain.models import Account
 from src.domain.entities import AccountEntitie
 from src.domain.repositories import AccountRepository
 from src.presenter import ErrorAccountExistent
-from src.utils import Validates
+from src.use_case import BaseUseCase
 
 
-class Sigin:
+class Sigin(BaseUseCase):
     def __init__(self, repository: AccountRepository) -> None:
-        self.validate = Validates()
         self.repository = repository
 
     def run(self, account: Account) -> Account:

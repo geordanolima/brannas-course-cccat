@@ -1,18 +1,17 @@
 from src.domain.models import Account
 from src.domain.repositories import AccountRepository
 from src.presenter import ErrorIsInvalidUUID
-from src.utils.validates import Validates
+from src.use_case import BaseGetUseCase
 
 
-class AccountGet:
+class AccountGet(BaseGetUseCase):
     def __init__(self, repository: AccountRepository) -> None:
+        super().__init__()
         self._repository = repository
-        self._validate = Validates()
 
-    def get_account_by_id(self, account_id: str) -> Account:
-        if not self._validate.is_uuid(id=account_id):
-            raise ErrorIsInvalidUUID()
-        account = self._repository.get_account_by_id(id=account_id)
+    def get_id(self, id: str) -> Account:
+        super().get_id(id=id)
+        account = self._repository.get_account_by_id(id=id)
         if not account:
             raise ErrorIsInvalidUUID()
         return account
