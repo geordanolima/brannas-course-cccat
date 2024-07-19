@@ -1,4 +1,5 @@
 from datetime import datetime
+from uuid import uuid4
 
 from src.domain.constants import RideStatusEnum
 from src.domain.models import Ride
@@ -9,8 +10,8 @@ from ._base_entitie import BaseEntitie
 class RideEntitie(BaseEntitie):
     def __init__(
         self,
-        ride_id: str,
         passenger_id: str,
+        ride_id: str = str(uuid4()),
         status: str = RideStatusEnum.CREATED.value,
         driver_id: str = None,
         rate: int = -1,
@@ -40,7 +41,7 @@ class RideEntitie(BaseEntitie):
         )
 
     def object(self, response: bool = False) -> Ride:
-        _value = super().object()
+        result = super().object()
         if response:
-            _value.status = RideStatusEnum.create_from_value(_value.status).name
-        return _value
+            result.status = RideStatusEnum.create_from_value(result.status).name
+        return result

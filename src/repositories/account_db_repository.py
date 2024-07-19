@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from settings import Settings
 from src.database import Database
 from src.domain.entities import AccountEntitie
 from src.domain.models import Account
@@ -7,7 +8,7 @@ from src.domain.repositories import AccountRepository
 
 
 class AccountDatabaseRepository(AccountRepository):
-    table: str = "cccat.account"
+    table: str = "{}.account".format(Settings().DATABASE_SCHEMA)
 
     def __init__(self, db: Database) -> None:
         self.db = db
@@ -22,22 +23,22 @@ class AccountDatabaseRepository(AccountRepository):
     def get_account_by_email(self, email, hide_password: bool = True):
         account = self.db.db_get_dict(self._sql_get_account_by_email(email=email))
         if account:
-            return AccountEntitie(**account[0]).object(hide_password=hide_password)
+            return self._get_obj_account(account=account[0], hide_password=hide_password)
         return None
 
     def get_account_by_id(self, id):
         accounts = self.db.db_get_dict(sql=self._sql_get_account_by_id(id=id))
         if accounts:
             account = accounts[0]
-            account["password"] = "Password#123"            
-            return AccountEntitie(**account).object(hide_password=True)
+            account["password"] = "Password#123"
+            return self._get_obj_account(account=account, hide_password=True)
         return None
 
     def get_accounts(self):
         accounts = self.db.db_get_dict(sql=self._sql_get_accounts(limit=100))
         result = []
         for item in accounts:
-            result.append(AccountEntitie(**item).object(hide_password=True))
+            result.append(self._get_obj_account(account=item, hide_password=True))
         return result
 
     def update_account(self, account: Account, new_account: Account):
@@ -45,6 +46,16 @@ class AccountDatabaseRepository(AccountRepository):
 
     def update_password(self, account: Account, new_password: str):
         return self.db.db_query(sql=self._sql_update_password(account=account, new_password=new_password))
+
+    def _get_obj_account(self, account: dict, hide_password: bool):
+        updated_values = {"load_db": True}
+        for item in account:
+            if isinstance(account[item], datetime):
+                updated_values[item] = account[item].isoformat()
+            else:
+                updated_values[item] = account[item]
+        return AccountEntitie(**updated_values).object(hide_password=hide_password)
+            
 
     def _sql_insert_account(self, account: Account) -> str:
         sql = """INSERT INTO {table}

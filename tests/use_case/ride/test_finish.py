@@ -23,7 +23,7 @@ def positions_insert(position_repository, ride_in_progress):
     for coordinate in coordinates:
         position = PositionEntitie(position_id=str(uuid4()), ride_id=ride_in_progress.ride_id, coordinate=coordinate)
         position_repository.insert_position(position=position.object())
-    return {"distance": 5, "fare": 10.5}
+    return {"distance": 5, "fare": 19.5}
 
 
 def test_finish_ride_uuid_invalid(position_repository, ride_repository):

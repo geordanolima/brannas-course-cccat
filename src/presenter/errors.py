@@ -62,6 +62,10 @@ class ErrorInvalidRate(BaseException):
     message = {"ERROR": "INVALID RATE", "CODE": -6}
 
 
+class ErrorInvalidSegment(BaseException):
+    message = {"ERROR": "INVALID SEGMENT", "CODE": -7}
+
+
 class ErrorMissingInformation(BaseException):
     message = {"ERROR": "MISSING INFORMATION"}
 

@@ -9,7 +9,7 @@ from tests.repositories import AccountTestRepository
 
 
 @pytest.fixture
-def repository() -> AccountTestRepository:
+def account_repository() -> AccountTestRepository:
     return AccountTestRepository(db=None)
 
 
@@ -36,8 +36,8 @@ def create_account(password) -> Account:
 
 
 @pytest.fixture
-def populate_account(repository, create_account: Account) -> Account:
-    return repository.insert_account(account=create_account)
+def populate_account(account_repository, create_account: Account) -> Account:
+    return account_repository.insert_account(account=create_account)
 
 
 @pytest.fixture
@@ -46,5 +46,5 @@ def account_entitie(create_account) -> Account:
 
 
 @pytest.fixture
-def populate_account_entitie(repository, account_entitie: Account) -> Account:
-    return repository.insert_account(account=account_entitie)
+def populate_account_entitie(account_repository, account_entitie: Account) -> Account:
+    return account_repository.insert_account(account=account_entitie)

@@ -15,9 +15,8 @@ from src.use_case import BaseUseCase
 
 
 class RideCreate(BaseUseCase):
-    def __init__(self, ride_repository: RideRepository, passenger_repository: AccountRepository) -> None:
-        super().__init__()
-        self._account_repository = passenger_repository
+    def __init__(self, ride_repository: RideRepository, account_repository: AccountRepository) -> None:
+        self._account_repository = account_repository
         self._ride_repository = ride_repository
 
     def run(

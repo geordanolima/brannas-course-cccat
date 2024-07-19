@@ -52,7 +52,7 @@ def to_coord() -> CoordinateObject:
 
 def test_ride_is_not_passenger(account_not_passenger, from_coord, to_coord):
     with pytest.raises(ErrorIsNeedPassenger):
-        use_case = RideCreate(ride_repository=ride_repository, passenger_repository=account_repository)
+        use_case = RideCreate(ride_repository=ride_repository, account_repository=account_repository)
         use_case.run(
             account_id=account_not_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
         )
@@ -62,14 +62,14 @@ def test_passenger_have_other_ride_in_progress(
     account_passenger, ride_in_progress, from_coord, to_coord
 ):
     with pytest.raises(ErrorHaveRideInProgress):
-        use_case = RideCreate(ride_repository=ride_repository, passenger_repository=account_repository)
+        use_case = RideCreate(ride_repository=ride_repository, account_repository=account_repository)
         use_case.run(
             account_id=account_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
         )
 
 
 def test_new_ride(account_passenger, from_coord, to_coord):
-    use_case = RideCreate(ride_repository=ride_repository, passenger_repository=account_repository)
+    use_case = RideCreate(ride_repository=ride_repository, account_repository=account_repository)
     ride = use_case.run(
         account_id=account_passenger.account_id, from_coordinate=from_coord, to_coordinate=to_coord
     )

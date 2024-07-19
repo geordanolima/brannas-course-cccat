@@ -26,11 +26,11 @@ class RideRepository(abc.ABC):
         ...
 
     @abc.abstractmethod
-    def update_status_ride(self, ride: Ride, new_status: int) -> Ride:
+    def update_fare_ride(self, ride: Ride, fare: float, distance: float, new_status: int) -> Ride:
         ...
 
     @abc.abstractmethod
-    def update_fare_ride(self, ride: Ride, fare: float, distance: float, new_status: int) -> Ride:
+    def update_status_ride(self, ride: Ride, new_status: int) -> Ride:
         ...
 
     @abc.abstractmethod

@@ -20,3 +20,9 @@ class RideStatusEnum(ValueConstructibleEnum):
     PAY_FAIL = 6
     PENDING_RATE = 7
     FINISHED = 8
+
+
+class TransactionStatusEnum(ValueConstructibleEnum):
+    CREATED = 0
+    SUCCESS = 1
+    FAIL = 2

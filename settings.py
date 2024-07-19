@@ -7,3 +7,4 @@ class Settings():
     DATABASE_PORT: int = os.getenv("DATABASE_PORET", 54321)
     DATABASE_USER: str = os.getenv("DATABASE_USER", "test")
     DATABASE_PASS: str = os.getenv("DATABASE_PASS", "test")
+    DATABASE_SCHEMA: str = os.getenv("DATABASE_SCHEMA", "cccat")

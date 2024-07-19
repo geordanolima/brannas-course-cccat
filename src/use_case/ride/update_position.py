@@ -11,7 +11,6 @@ from src.use_case import BaseUseCase
 
 class RideUpdatePosition(BaseUseCase):
     def __init__(self, ride_repository: RideRepository, position_repository: PositionRepository) -> None:
-        super().__init__()
         self._ride_repository = ride_repository
         self._position_repository = position_repository
 

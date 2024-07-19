@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from settings import Settings
 from src.database import Database
 from src.domain.entities import PositionEntitie
 from src.domain.models.position import Position
@@ -7,7 +8,7 @@ from src.domain.repositories import PositionRepository
 
 
 class PositionDatabaseRepository(PositionRepository):
-    table: str = "cccat.position"
+    table: str = "{}.position".format(Settings().DATABASE_SCHEMA)
 
     def __init__(self, db: Database) -> None:
         self.db = db

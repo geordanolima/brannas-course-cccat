@@ -17,7 +17,7 @@ def pytest_sessionstart(session):
 
 
 @pytest.fixture(autouse=True, scope="session")
-def envvars(tmpdir_factory, session_mocker):
+def envvars(tmpdir_factory, session_mocker) -> Settings:
     settings = Settings()
     settings.DATABASE_NAME = "app_test"
     return settings
@@ -37,7 +37,7 @@ def db_connection(envvars):
     db.db_query(get_migrate(file_name="create_tables"))
     yield db
     db.db_query(get_migrate(file_name="drop_tables"))
-    return db
+    return db._connection
 
 
 @pytest.fixture(scope="session")

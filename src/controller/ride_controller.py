@@ -7,18 +7,18 @@ from src.use_case import RideAccept, RideCreate, RideFinish, RideGet, RideStart,
 
 class RideController:
     def __init__(self) -> None:
-        self._database = DatabaseProvider()
+        _connection = DatabaseProvider().get_connection()
         self._presenter = BasePresenter()
-        self._account_repository = AccountDatabaseRepository(db=self._database.connection)
-        self._ride_repository = RideDatabaseRepository(db=self._database.connection)
-        self._position_repository = PositionDatabaseRepository(db=self._database.connection)
+        self._account_repository = AccountDatabaseRepository(db=_connection)
+        self._ride_repository = RideDatabaseRepository(db=_connection)
+        self._position_repository = PositionDatabaseRepository(db=_connection)
 
     def create_ride(self, account: str, from_coordinate: CoordinateObject, to_coordinate: CoordinateObject):
-        use_case = RideCreate(passenger_repository=self._account_repository, ride_repository=self._ride_repository)
+        use_case = RideCreate(account_repository=self._account_repository, ride_repository=self._ride_repository)
         return self._presenter.exception_handler(method=use_case.run, params=[account, from_coordinate, to_coordinate])
 
     def accept_ride(self, ride_id: str, driver_id: str):
-        use_case = RideAccept(passenger_repository=self._account_repository, ride_repository=self._ride_repository)
+        use_case = RideAccept(account_repository=self._account_repository, ride_repository=self._ride_repository)
         return self._presenter.exception_handler(method=use_case.run, params=[driver_id, ride_id])
 
     def start_ride(self, ride_id: str, driver_id: str):

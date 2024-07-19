@@ -11,7 +11,7 @@ create table cccat.account (
 	car_plate text null,
 	is_passenger boolean not null default false,
 	is_driver boolean not null default false,
-	rate int -1,
+	rate int default -1,
 	created_at timestamp,
 	updated_at timestamp
 );
@@ -27,7 +27,7 @@ create table cccat.ride (
 	from_longitudeitude numeric,
 	to_latitudeitude numeric,
 	to_longitude numeric,
-	rate int -1,
+	rate int default -1,
 	created_at timestamp,
 	updated_at timestamp
 );
@@ -42,3 +42,13 @@ create table cccat.position (
 	created_at timestamp
 );
 ALTER TABLE cccat.position ADD CONSTRAINT ride_position_fk FOREIGN KEY (ride_id) REFERENCES cccat.ride(ride_id);
+
+
+create table cccat.transaction (
+	transaction_id uuid primary key,
+	ride_id uuid,
+	amount numeric,
+	status int default -1,
+	created_at timestamp
+);
+ALTER TABLE cccat.transaction ADD CONSTRAINT ride_fk FOREIGN KEY (ride_id) REFERENCES cccat.ride(ride_id);

@@ -44,45 +44,45 @@ def create_account_invalid_plate(create_account) -> Account:
 
 
 @pytest.fixture
-def populate_account(repository, create_account: Account):
+def populate_account(account_repository, create_account: Account):
     account = create_account
     account.email = "testexistent@test.com"
-    repository.insert_account(account=account)
+    account_repository.insert_account(account=account)
     return account
 
 
-def test_account_existent(populate_account, repository):
+def test_account_existent(populate_account, account_repository):
     with pytest.raises(ErrorAccountExistent):
-        use_case = Sigin(repository=repository)
+        use_case = Sigin(account_repository=account_repository)
         use_case.run(account=populate_account)
 
 
-def test_account_not_existent(repository, create_account):
-    use_case = Sigin(repository=repository)
+def test_account_not_existent(account_repository, create_account):
+    use_case = Sigin(account_repository=account_repository)
     registered: Account = use_case.run(account=create_account)
-    id = repository.get_account_by_id(id=registered.account_id).account_id
+    id = account_repository.get_account_by_id(id=registered.account_id).account_id
     assert registered.account_id == id
 
 
-def test_account_invalid_name(repository, create_account_invalid_name):
+def test_account_invalid_name(account_repository, create_account_invalid_name):
     with pytest.raises(ErrorInvalidName):
-        use_case = Sigin(repository=repository)
+        use_case = Sigin(account_repository=account_repository)
         use_case.run(account=create_account_invalid_name)
 
 
-def test_account_invalid_email(create_account_invalid_email, repository):
+def test_account_invalid_email(create_account_invalid_email, account_repository):
     with pytest.raises(ErrorInvalidEmail):
-        use_case = Sigin(repository=repository)
+        use_case = Sigin(account_repository=account_repository)
         use_case.run(account=create_account_invalid_email)
 
 
-def test_account_invalid_cpf(create_account_invalid_cpf, repository):
+def test_account_invalid_cpf(create_account_invalid_cpf, account_repository):
     with pytest.raises(ErrorInvalidCpf):
-        use_case = Sigin(repository=repository)
+        use_case = Sigin(account_repository=account_repository)
         use_case.run(account=create_account_invalid_cpf)
 
 
-def test_account_driver_invalid_plate(create_account_invalid_plate, repository):
+def test_account_driver_invalid_plate(create_account_invalid_plate, account_repository):
     with pytest.raises(ErrorInvalidPlate):
-        use_case = Sigin(repository=repository)
+        use_case = Sigin(account_repository=account_repository)
         use_case.run(account=create_account_invalid_plate)

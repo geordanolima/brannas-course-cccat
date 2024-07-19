@@ -1,4 +1,5 @@
-from .base_use_case import BaseGetUseCase, BaseUseCase
+from .base_use_case import BaseUseCase
+from .base_use_case_get import BaseGetUseCase
 from .account.account_login import Login
 from .account.account_get import AccountGet
 from .account.account_sigin import Sigin

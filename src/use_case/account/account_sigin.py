@@ -6,12 +6,11 @@ from src.use_case import BaseUseCase
 
 
 class Sigin(BaseUseCase):
-    def __init__(self, repository: AccountRepository) -> None:
-        self.repository = repository
+    def __init__(self, account_repository: AccountRepository) -> None:
+        self._account_repository = account_repository
 
     def run(self, account: Account) -> Account:
-        if self.repository.get_exists_account(email=account.email):
+        if self._account_repository.get_exists_account(email=account.email):
             raise ErrorAccountExistent()
         account = AccountEntitie(**account.dict()).object()
-        self.repository.insert_account(account=account)
-        return self.repository.get_account_by_id(id=account.account_id)
+        return self._account_repository.insert_account(account=account)

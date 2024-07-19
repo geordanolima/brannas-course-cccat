@@ -6,7 +6,6 @@ from src.use_case import BaseGetUseCase
 
 class RideGet(BaseGetUseCase):
     def __init__(self, ride_repository: RideRepository) -> None:
-        super().__init__()
         self._ride_repository = ride_repository
 
     def get_id(self, id: str) -> Ride:

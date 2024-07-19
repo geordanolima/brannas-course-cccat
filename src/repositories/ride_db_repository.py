@@ -1,13 +1,15 @@
 from datetime import datetime
 
+from settings import Settings
 from src.database import Database
 from src.domain.entities import RideEntitie
 from src.domain.repositories import RideRepository
 from src.domain.models import Ride
+from src.presenter.errors import ErrorStatusNotAllowed
 
 
 class RideDatabaseRepository(RideRepository):
-    table: str = "cccat.ride"
+    table: str = "{}.ride".format(Settings().DATABASE_SCHEMA)
 
     def __init__(self, db: Database) -> None:
         self._db = db

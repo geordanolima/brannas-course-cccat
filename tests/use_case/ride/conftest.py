@@ -5,7 +5,9 @@ import pytest
 from src.domain.constants import RideStatusEnum
 from src.domain.entities import AccountEntitie, RideEntitie
 from src.domain.models import Account, Ride
-from tests.repositories import AccountTestRepository, RideTestRepository, PositionTestRepository
+from tests.repositories import (
+    AccountTestRepository, RideTestRepository, PositionTestRepository, TransactionTestRepository,
+)
 
 
 @pytest.fixture
@@ -16,6 +18,11 @@ def account_repository() -> AccountTestRepository:
 @pytest.fixture
 def ride_repository() -> RideTestRepository:
     return RideTestRepository(db=None)
+
+
+@pytest.fixture
+def transaction_repository() -> TransactionTestRepository:
+    return TransactionTestRepository(db=None)
 
 
 @pytest.fixture
@@ -81,6 +88,7 @@ def ride_created(create_ride, ride_repository):
 def ride_in_progress(ride_repository, create_ride, account_driver) -> Ride:
     create_ride.status = RideStatusEnum.IN_PROGRESS.value
     create_ride.driver_id = account_driver.account_id
+    create_ride.created_at = '2024-07-18T20:17:48.947017'
     ride_repository.insert_ride(create_ride)
     return create_ride
 
