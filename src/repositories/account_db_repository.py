@@ -83,7 +83,7 @@ class AccountDatabaseRepository(AccountRepository):
         return f"select * from {self.table} where email = '{email}';"
 
     def _sql_get_account_by_id(self, id):
-        return f"select * from {self.table} where account_id = '{id}';"
+        return f"select * from {self.table} where account_id = '{id}'::uuid;"
 
     def _sql_get_accounts(self, limit: int = None):
         query_limit = ""

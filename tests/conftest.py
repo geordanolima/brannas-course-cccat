@@ -40,17 +40,10 @@ def db_connection(envvars):
     return db._connection
 
 
-@pytest.fixture(scope="session")
-def db_clear(envvars):
-    settings = envvars
-    db = Database(
-        host=settings.DATABASE_HOST,
-        port=settings.DATABASE_PORT,
-        db_name=settings.DATABASE_NAME,
-        user=settings.DATABASE_USER,
-        password=settings.DATABASE_PASS,
-    )
-    db.db_query(get_migrate(file_name="drop_tables"))
+@pytest.fixture()
+def db_clear(db_connection):
+    db_connection.db_query(get_migrate(file_name="drop_tables"))
+    db_connection.db_query(get_migrate(file_name="create_tables"))
 
 
 def get_migrate(file_name) -> str:

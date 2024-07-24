@@ -48,10 +48,11 @@ class RideDatabaseRepository(RideRepository):
 
     def update_rate_repository(self, ride: Ride, rate: int, new_status: int) -> Ride:
         self._db.db_query(sql=self._sql_update_rate(ride=ride, rate=rate, status=new_status))
-        return self._sql_get_ride_by_id(id=ride.ride_id)
+        return self.get_ride_by_id(id=ride.ride_id, response=True)
     
     def update_driver_ride(self, ride: Ride, id_driver: int, new_status: int):
-        return self._db.db_query(sql=self._sql_update_driver_ride(ride=ride, id_driver=id_driver, status=new_status))
+        self._db.db_query(sql=self._sql_update_driver_ride(ride=ride, id_driver=id_driver, status=new_status))
+        return self.get_ride_by_id(id=ride.ride_id, response=True)
 
     def get_ride_by_id(self, id: str, response: bool = False) -> Ride:
         ride = self._db.db_get_dict(self._sql_get_ride_by_id(id=id))
@@ -69,7 +70,7 @@ class RideDatabaseRepository(RideRepository):
             from_latitude,from_longitude, to_latitude, to_longitude, created_at, updated_at)
             VALUES
             (
-                '{ride_id}'::uuid, '{passenger_id}'::uuid, '{driver_id}'::uuid,
+                '{ride_id}'::uuid, '{passenger_id}'::uuid, '{driver_id}',
                 {status}, {fare}, {distance}, {from_latitude},
                 {from_longitude}, {to_latitude}, {to_longitude}, '{created_at}', Null
             );

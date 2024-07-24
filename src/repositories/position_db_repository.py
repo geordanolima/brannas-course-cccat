@@ -27,13 +27,14 @@ class PositionDatabaseRepository(PositionRepository):
         result = []
         positions = self.db.db_get_dict(sql=self._sql_get_position_by_ride(ride_id=ride_id))
         for position in positions:
-            result.append(PositionEntitie(**position[0]).object())
+            result.append(PositionEntitie(**position).object())
         return result
 
-    def _sql_insert_position(position: Position) -> str:
+    def _sql_insert_position(self, position: Position) -> str:
         sql = """INSERT INTO {table} (position_id, ride_id, latitude, longitude, created_at)
-        VALUES({position_id}::uuid, {ride_id}::uuid, {latitude}, {longitude}, '{created_at}');"""
+        VALUES('{position_id}'::uuid, '{ride_id}'::uuid, {latitude}, {longitude}, '{created_at}');"""
         return sql.format(
+            table=self.table,
             position_id=position.position_id,
             ride_id=position.ride_id,
             latitude=position.latitude,

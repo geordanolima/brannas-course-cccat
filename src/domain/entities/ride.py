@@ -24,6 +24,10 @@ class RideEntitie(BaseEntitie):
         created_at: str = datetime.now().isoformat(),
         updated_at: str = None,
     ):
+        if type(created_at) is datetime:
+            created_at = created_at.isoformat()
+        if type(updated_at) is datetime:
+            updated_at = updated_at.isoformat()
         self._value = Ride(
             ride_id=ride_id,
             passenger_id=passenger_id,
